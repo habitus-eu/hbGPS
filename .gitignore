@@ -48,7 +48,7 @@ po/*~
 # RStudio Connect folder
 rsconnect/
 
-*.Proj
+*.RProj
 
 # Development scripts
 inst/main.R
