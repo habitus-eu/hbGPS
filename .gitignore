@@ -47,3 +47,8 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+
+# Development scripts
+inst/main.R
+inst/runGGIR.R
