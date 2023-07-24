@@ -1,0 +1,7 @@
+export(pipeline, geodesicDistance)
+importFrom("grDevices", "dev.off", "pdf")
+importFrom("graphics", "legend", "lines", "par")
+importFrom("stats", "median")
+import("data.table")
+importFrom("GGIRread", "resample")
+importFrom("units", "as_units", "set_units")

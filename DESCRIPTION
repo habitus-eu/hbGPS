@@ -1,0 +1,15 @@
+Package: hbGPS
+Type: Package
+Title: Process GPS Data For Human Behaviour Research
+Version: 0.0.1
+Date: 2023-07-24
+Authors@R: c(person("Vincent T","van Hees",role=c("aut","cre"),
+                  email="v.vanhees@accelting.com"),
+             person("SDU Denmark",  role = c("cph", "fnd")))
+Maintainer: Vincent T van Hees <v.vanhees@accelting.com>
+Description: Processes data collected with GPS sensors worn by human study participants and optionally merges and utilise accelerometer time series data as pre-processed by the R package GGIR.
+URL: https://github.com/habitus-eu/hbGPS
+BugReports: https://github.com/habitus-eu/hbGPS/issues
+License: Apache License (== 2.0)
+Imports: GGIRread, data.table, units
+Depends: R (>= 3.5.0)
