@@ -16,6 +16,7 @@
          threshold_snr = 225,
          threshold_snr_ratio = 50,
          tz = "",
+         time_format =  "\%d/\%m/\%Y \%H:\%M:\%SO",
          GGIRpath = NULL)
 }
 \arguments{
@@ -45,6 +46,9 @@
   }
   \item{tz}{
     Character to specify timezone name according to timezone database.
+  }
+  \item{time_format}{
+    Character to specify timestamp format.
   }
   \item{GGIRpath}{
     Path to GGIR time series ouput folder (ms5.outraw)

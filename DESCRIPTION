@@ -11,5 +11,6 @@ Description: Processes data collected with GPS sensors worn by human study parti
 URL: https://github.com/habitus-eu/hbGPS
 BugReports: https://github.com/habitus-eu/hbGPS/issues
 License: Apache License (== 2.0)
+Suggests: testthat, covr
 Imports: GGIRread, data.table, units
 Depends: R (>= 3.5.0)

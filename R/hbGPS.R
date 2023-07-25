@@ -7,6 +7,7 @@ hbGPS = function(gps_file = NULL,
                  threshold_snr = 225,
                  threshold_snr_ratio = 50,
                  tz = "",
+                 time_format = "%d/%m/%Y %H:%M:%SO",
                  GGIRpath = NULL) {
 
   # Log input parameters:
@@ -19,6 +20,7 @@ hbGPS = function(gps_file = NULL,
                          threshold_snr = threshold_snr,
                          threshold_snr_ratio = threshold_snr_ratio,
                          tz = tz,
+                         time_format = time_format,
                          GGIRpath = GGIRpath)
   
   sink(paste0(outputDir, "/parameter_log.txt"))
@@ -33,7 +35,8 @@ hbGPS = function(gps_file = NULL,
   # Load GPS file csv
   out = load_and_tidy_up_GPS(gps_file = gps_file,
                              idloc = idloc,
-                             tz = tz)
+                             tz = tz,
+                             time_format = time_format)
   D = out$df
   ID = out$ID
   rm(out)

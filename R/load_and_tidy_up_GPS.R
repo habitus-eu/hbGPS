@@ -1,4 +1,4 @@
-load_and_tidy_up_GPS = function(gps_file, idloc = NULL, tz = "") {
+load_and_tidy_up_GPS = function(gps_file, idloc = NULL, tz = "", time_format = "%d/%m/%Y %H:%M:%SO") {
   df = data.table::fread(file = gps_file, data.table = FALSE)
   if ("ptid" %in% colnames(df)) { # Specific for MSSE dataset
     UID = unique(df$ptid)
@@ -24,12 +24,18 @@ load_and_tidy_up_GPS = function(gps_file, idloc = NULL, tz = "") {
   colnames(df) = gsub(pattern = "sat info [(]sid-snr[)]", replacement = "satinfo", x = colnames(df))
   
   cat(paste0("\nLATITUDE ", mean(df$lat), " longitude ", mean(df$lon), "\n"))
-  
   # Time
   if (length(grep(pattern = "sensecam", x = colnames(df))) > 0) {
-    df$time = as.POSIXct(df$datetime, tz = tz)
+    oldtime = df$datetime[pmin(10, nrow(df))]
+    newTime = as.POSIXct(df$datetime, tz = tz, format = time_format)
   } else {
-    df$time = as.POSIXct(paste(df$date, df$time, sep = " "), tz = tz)
+    oldtime = paste0(df$date[pmin(10, nrow(df))], " ", df$time[pmin(10, nrow(df))])
+    newTime = as.POSIXct(paste(df$date, df$time, sep = " "), tz = tz, format = time_format)
+  }
+  if (any(is.na(newTime[1:pmin(100, length(newTime))])) == TRUE) {
+    stop(paste0("Specified time_format is ", time_format, " we see ", oldtime))
+  } else {
+    df$time = newTime
   }
   # Order by timestamp
   df = df[order(df$time), ]

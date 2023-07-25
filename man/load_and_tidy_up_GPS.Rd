@@ -7,7 +7,8 @@
   Load and tidy up GPS data
 }
 \usage{
-  load_and_tidy_up_GPS(gps_file, idloc = NULL, tz = "")
+  load_and_tidy_up_GPS(gps_file, idloc = NULL, tz = "",
+  time_format = "\%d/\%m/\%Y \%H:\%M:\%SO")
 }
 \arguments{
   \item{gps_file}{
@@ -18,6 +19,9 @@
   }
   \item{tz}{
     Timezone
+  }
+  \item{time_format}{
+    See \link{hbGPS}
   }
 }
 \value{
