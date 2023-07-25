@@ -1,4 +1,4 @@
-export(pipeline, geodesicDistance)
+export(hbGPS, geodesicDistance)
 importFrom("grDevices", "dev.off", "pdf")
 importFrom("graphics", "legend", "lines", "par")
 importFrom("stats", "median")

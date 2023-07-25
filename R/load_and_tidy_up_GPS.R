@@ -1,4 +1,4 @@
-load_and_tidy_up_GPS = function(gps_file, idloc = NULL, params = NULL) {
+load_and_tidy_up_GPS = function(gps_file, idloc = NULL, tz = "") {
   df = data.table::fread(file = gps_file, data.table = FALSE)
   if ("ptid" %in% colnames(df)) { # Specific for MSSE dataset
     UID = unique(df$ptid)
@@ -27,9 +27,9 @@ load_and_tidy_up_GPS = function(gps_file, idloc = NULL, params = NULL) {
   
   # Time
   if (length(grep(pattern = "sensecam", x = colnames(df))) > 0) {
-    df$time = as.POSIXct(df$datetime, tz = params$tz)
+    df$time = as.POSIXct(df$datetime, tz = tz)
   } else {
-    df$time = as.POSIXct(paste(df$date, df$time, sep = " "), tz = params$tz)
+    df$time = as.POSIXct(paste(df$date, df$time, sep = " "), tz = tz)
   }
   # Order by timestamp
   df = df[order(df$time), ]

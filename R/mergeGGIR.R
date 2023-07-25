@@ -17,8 +17,8 @@ mergeGGIR = function(GGIRpath, GPSdf, ID) {
     log_acc = 2
     if (file.exists(GGIR_ts_path) & file.exists(GGIR_legend)) {
       log_acc = 3
-      G = data.table::fread(file = GGIR_ts_path)
-      Legend = data.table::fread(file = GGIR_legend)
+      G = data.table::fread(file = GGIR_ts_path, data.table = FALSE)
+      Legend = data.table::fread(file = GGIR_legend, data.table = FALSE)
       GPSdf$timenum = as.numeric(GPSdf$time)
       rangeG = c(G$timenum[1], as.numeric(G$timenum[nrow(G)]))
       rangeD = c(GPSdf$timenum[1], GPSdf$timenum[nrow(GPSdf)])
@@ -43,8 +43,7 @@ mergeGGIR = function(GGIRpath, GPSdf, ID) {
           GPSdf$GGIR_ACC = GGIRread::resample(raw = as.matrix(G$ACC), rawTime = G$timenum, time = GPSdf$time, stop = nrow(G), type = 1)
           # Nearest neigbour interpolate other GGIR output columns
           col2impute = c("SleepPeriodTime", "invalidepoch", "guider", "window", "class_id")
-          
-          GS = as.data.frame(GGIRread::resample(raw = as.matrix(G[, ..col2impute]),
+          GS = as.data.frame(GGIRread::resample(raw = as.matrix(G[, col2impute]),
                                                 rawTime = G$timenum, time = GPSdf$time, stop = nrow(G), type = 2))
           colnames(GS) = paste0("GGIR_", col2impute)
           # turn class_id to factor to integrate the class labels
@@ -54,7 +53,6 @@ mergeGGIR = function(GGIRpath, GPSdf, ID) {
       }
     }
   }
-  
   if (log_acc == 1) {
     warning("acc file path is NULL")
   } else if (log_acc == 2) {
@@ -65,6 +63,8 @@ mergeGGIR = function(GGIRpath, GPSdf, ID) {
   } else if (log_acc == 4) {
     warning(paste0("Acceleromter data does not come with more than 30% valid",
                    " data during overlapping interval"))
+  } else if (log_acc == 0) {
+    message("\nGGIR time series successfully merged with GPS time series")
   }
   invisible(list(GPSdf = GPSdf, log_acc = log_acc))
 }

@@ -7,7 +7,7 @@
   Load and tidy up GPS data
 }
 \usage{
-  load_and_tidy_up_GPS(gps_file, idloc = NULL, params = NULL)
+  load_and_tidy_up_GPS(gps_file, idloc = NULL, tz = "")
 }
 \arguments{
   \item{gps_file}{
@@ -16,8 +16,8 @@
   \item{idloc}{
     Number to indicato id location in file name (same as GGIR)
   }
-  \item{params}{
-    Data.frame with all parameters
+  \item{tz}{
+    Timezone
   }
 }
 \value{

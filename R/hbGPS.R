@@ -1,11 +1,39 @@
-pipeline = function(params, GGIRpath, outputDir) {
+hbGPS = function(gps_file = NULL,
+                 outputDir = NULL,
+                 idloc = 1,
+                 maxBreakLengthSeconds = 120,
+                 minTripDur = 60,
+                 mintripDist_m = 100,
+                 threshold_snr = 225,
+                 threshold_snr_ratio = 50,
+                 tz = "",
+                 GGIRpath = NULL) {
+
+  # Log input parameters:
+  param_log = data.frame(gps_file = gps_file,
+                         outputDir = outputDir,
+                         idloc = idloc,
+                         maxBreakLengthSeconds = maxBreakLengthSeconds,
+                         minTripDur = minTripDur,
+                         mintripDist_m = mintripDist_m,
+                         threshold_snr = threshold_snr,
+                         threshold_snr_ratio = threshold_snr_ratio,
+                         tz = tz,
+                         GGIRpath = GGIRpath)
+  
+  sink(paste0(outputDir, "/parameter_log.txt"))
+  for (i in 1:ncol(param_log)) {
+    txt = paste0(colnames(param_log)[i], " =  ", param_log[1,i], "\n")
+    cat(txt)
+  }
+  sink()
   
   timer0 = Sys.time()
 
   # Load GPS file csv
-  out = load_and_tidy_up_GPS(gps_file = params$gps_file,
-                             idloc = params$idloc,
-                             params = params)
+  out = load_and_tidy_up_GPS(gps_file = gps_file,
+                             idloc = idloc,
+                             tz = tz)
   D = out$df
   ID = out$ID
   rm(out)
@@ -19,7 +47,7 @@ pipeline = function(params, GGIRpath, outputDir) {
   rm(MD)
   
   # Prepare output filenames
-  outfn = unlist(strsplit(basename(params$gps_file), split = "[.]csv"))
+  outfn = unlist(strsplit(basename(gps_file), split = "[.]csv"))
   pdffile = paste0(outputDir, "/", outfn, "_", ID, ".pdf")
   shpfile =  paste0(outputDir, "/", outfn, "_", ID, ".shp")
   
@@ -31,8 +59,8 @@ pipeline = function(params, GGIRpath, outputDir) {
   
   # Initial state classification
   D = initialStateClassification(df = D,
-                                 threshold_snr = params$threshold_snr,
-                                 threshold_snr_ratio = params$threshold_snr_ratio)
+                                 threshold_snr = threshold_snr,
+                                 threshold_snr_ratio = threshold_snr_ratio)
   
   #======================================================
   # Reclassify based on state duration
@@ -78,9 +106,9 @@ pipeline = function(params, GGIRpath, outputDir) {
   
   # Derive trips by looking at sequences of states
   # No state classification here or further down
-  D = deriveTrips(df = D, tz = params$tz,
-                  minTripDur = params$minTripDur,
-                  mintripDist_m = params$mintripDist_m)
+  D = deriveTrips(df = D, tz = tz,
+                  minTripDur = minTripDur,
+                  mintripDist_m = mintripDist_m)
   
   
   # convert units back to degrees
