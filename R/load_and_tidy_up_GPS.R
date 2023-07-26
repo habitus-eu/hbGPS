@@ -27,10 +27,12 @@ load_and_tidy_up_GPS = function(gps_file, idloc = NULL, tz = "", time_format = "
   # Time
   if (length(grep(pattern = "sensecam", x = colnames(df))) > 0) {
     oldtime = df$datetime[pmin(10, nrow(df))]
-    newTime = as.POSIXct(df$datetime, tz = tz, format = time_format)
+    newTime = as.POSIXct(df$datetime,
+                         tz = tz, format = time_format, origin = "1970-01-01")
   } else {
     oldtime = paste0(df$date[pmin(10, nrow(df))], " ", df$time[pmin(10, nrow(df))])
-    newTime = as.POSIXct(paste(df$date, df$time, sep = " "), tz = tz, format = time_format)
+    newTime = as.POSIXct(paste(df$date, df$time, sep = " "),
+                         tz = tz, format = time_format, origin = "1970-01-01")
   }
   if (any(is.na(newTime[1:pmin(100, length(newTime))])) == TRUE) {
     stop(paste0("Specified time_format is ", time_format, " we see ", oldtime))
