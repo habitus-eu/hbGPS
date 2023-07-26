@@ -25,8 +25,8 @@ deriveTrips = function(df, tz, minTripDur, mintripDist_m) {
   df$tripAveIncl_deg = 0 #df$tripmaxIncl_deg = 
   cnt = 1
   for (j in 1:length(tripStart)) {
-    s0 = as.POSIXct(Segs$t0[tripStart[j]], tz)
-    s1 = as.POSIXct(Segs$t1[tripEnd[j]], tz)
+    s0 = as.POSIXct(Segs$t0[tripStart[j]], tz = tz, origin = "1970-01-01")
+    s1 = as.POSIXct(Segs$t1[tripEnd[j]], tz = tz, origin = "1970-01-01")
     tripInd = which(df$time >= s0 & df$time <= s1)
     # trip duration in minutes
     tripDur = (Segs$t1[tripEnd[j]] - Segs$t0[tripStart[j]])
