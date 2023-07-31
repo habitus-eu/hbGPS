@@ -17,3 +17,102 @@ offers a pipeline that does:
 with a wide variety of accelerometer brands and data formats
 - User control over key parameters
 
+
+## Installation
+
+```
+install.packages("remotes")
+remotes::install_github("wadpac/GGIR")
+remotes::install_github("habitus-eu/hbGPS")
+```
+
+## Usage
+
+The code below shows an example of how use hbGPS in combination with R package GGIR.
+
+
+### Process accelerometer data with GGIR
+
+
+#### Raw data
+
+See GGIR documentation for additional details on how to run GGIR:
+https://cran.r-project.org/web/packages/GGIR/vignettes/GGIR.html
+
+
+```
+library(GGIR)
+GGIR(datadir = "F:/path/to/your/data/folder",
+     outputdir = "F:/path/to/your/output/folder",
+     mode = c(1:5),
+     overwrite = TRUE,
+     do.report = c(),
+     windowsizes = c(5, 900, 3600),
+     includedaycrit = 10,
+     includenightcrit = 10,
+     part5_agg2_60seconds = TRUE,
+     HASPT.algo = "NotWorn",
+     HASIB.algo = "NotWorn",
+     HASPT.ignore.invalid = FALSE,
+     threshold.mod = c(100, 120),
+     boutdur.in = c(25, 30),
+     ignorenonwear = FALSE,
+     save_ms5rawlevels = TRUE,
+     save_ms5raw_without_invalid = FALSE
+```
+
+#### Count data
+
+```
+library(GGIR)
+GGIR(datadir = "F:/path/to/your/data/folder",
+     outputdir = "F:/path/to/your/output/folder",
+     dataFormat = "actigraph_csv",
+     mode = c(1:2),
+     overwrite = FALSE,
+     do.report = c(2),
+     windowsizes = c(1, 900, 3600),
+     threshold.in = round(100 * (5/60), digits = 2),
+     threshold.mod = round(2500 * (5/60), digits = 2),
+     threshold.vig = round(10000 * (5/60), digits = 2),
+     extEpochData_dateformat = "%m/%d/%Y",
+     do.neishabouricounts = TRUE,
+     acc.metric = "NeishabouriCount_x",
+     HASPT.algo = "NotWorn",
+     HASIB.algo = "NotWorn",
+     do.visual = TRUE,
+     includedaycrit = 10,
+     includenightcrit = 10,
+     visualreport = FALSE,
+     outliers.only = FALSE,
+     save_ms5rawlevels = TRUE,
+     ignorenonwear = FALSE,
+     HASPT.ignore.invalid = FALSE,
+     save_ms5raw_without_invalid = FALSE
+)
+```
+
+
+### Process GPS data and integrate GGIR output
+
+
+```
+gps_file = "D:/path/to/gps/data/which/can/be/folder/withfiles/or/singlefile"
+outputDir = "F:/path/to/your/output/folder"
+
+# assumption is that GGIR has already been run specify GGIR output folder:
+GGIRpath = "F:/path/to/your/GGIR/output/folder/meta/ms5.outraw"
+
+D = hbGPS(gps_file = gps_file,
+          outputDir = outputDir,
+          idloc = 2,
+          maxBreakLengthSeconds = 120,
+          minTripDur = 60,
+          mintripDist_m = 100,
+          threshold_snr = 225,
+          threshold_snr_ratio = 50,
+          tz = "Australia/Perth", # timezone database name
+          time_format = "%Y/%m/%d %H:%M:%S",
+          GGIRpath = GGIRpath,
+          outputFormat = "PALMS")
+```
