@@ -33,11 +33,11 @@ The code below shows an example of how use hbGPS in combination with R package G
 
 ### Process accelerometer data with GGIR
 
-
-#### Raw data
-
 See GGIR documentation for additional details on how to run GGIR:
 https://cran.r-project.org/web/packages/GGIR/vignettes/GGIR.html
+
+
+#### If you have Raw data
 
 
 ```
@@ -61,7 +61,7 @@ GGIR(datadir = "F:/path/to/your/data/folder",
      save_ms5raw_without_invalid = FALSE
 ```
 
-#### Count data
+#### If you have Count data
 
 ```
 library(GGIR)
@@ -103,16 +103,17 @@ outputDir = "F:/path/to/your/output/folder"
 # assumption is that GGIR has already been run specify GGIR output folder:
 GGIRpath = "F:/path/to/your/GGIR/output/folder/meta/ms5.outraw"
 
-D = hbGPS(gps_file = gps_file,
-          outputDir = outputDir,
-          idloc = 2,
-          maxBreakLengthSeconds = 120,
-          minTripDur = 60,
-          mintripDist_m = 100,
-          threshold_snr = 225,
-          threshold_snr_ratio = 50,
-          tz = "Australia/Perth", # timezone database name
-          time_format = "%Y/%m/%d %H:%M:%S",
-          GGIRpath = GGIRpath,
-          outputFormat = "PALMS")
+hbGPS(gps_file = gps_file,
+      outputDir = outputDir,
+      idloc = 2,
+      maxBreakLengthSeconds = 120,
+      minTripDur = 60,
+      mintripDist_m = 100,
+      threshold_snr = 225,
+      threshold_snr_ratio = 50,
+      tz = "Australia/Perth", # timezone database name
+      time_format = "%Y/%m/%d %H:%M:%S",
+      GGIRpath = GGIRpath,
+      outputFormat = "PALMS") # alternative is "default"
 ```
+The code will store a csv file with a time series for each input gps file.
