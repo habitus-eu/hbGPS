@@ -8,10 +8,10 @@
   derive segment summary
 }
 \usage{
-  deriveSegments(D)
+  deriveSegments(df)
 }
 \arguments{
-  \item{D}{
+  \item{df}{
     Data.frame with all GPS data
   }
 }

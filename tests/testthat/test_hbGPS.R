@@ -27,7 +27,7 @@ test_that("hbGPS pipeline process file 4 correctly", {
             time_format = "%d/%m/%Y %H:%M:%S")
   
   expect_equal(nrow(D), 20029)
-  expect_equal(ncol(D), 41)
+  expect_equal(ncol(D), 44)
   
   expect_equal(length(unique(D$trip)), 39)
   expect_equal(mean(D$GGIR_ACC), 26.19259, tolerance = 0.0001)

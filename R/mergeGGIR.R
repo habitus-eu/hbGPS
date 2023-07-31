@@ -1,4 +1,4 @@
-mergeGGIR = function(GGIRpath, GPSdf, ID) {
+mergeGGIR = function(GGIRpath, GPSdf, ID, verbose) {
   # GGIRpath: path to ms5.rawout folder produced by GGIR
   # GPSdf: dataframe create by rest of code
   
@@ -63,8 +63,8 @@ mergeGGIR = function(GGIRpath, GPSdf, ID) {
   } else if (log_acc == 4) {
     warning(paste0("Acceleromter data does not come with more than 30% valid",
                    " data during overlapping interval"))
-  } else if (log_acc == 0) {
-    message("\nGGIR time series successfully merged with GPS time series")
+  # } else if (log_acc == 0) {
+    # if (verbose == TRUE) cat("\n(v) GGIR time series merged with GPS time series")
   }
   invisible(list(GPSdf = GPSdf, log_acc = log_acc))
 }

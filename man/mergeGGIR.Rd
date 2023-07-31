@@ -8,7 +8,7 @@
   timestamps do not allign.
 }
 \usage{
-  mergeGGIR(GGIRpath, GPSdf, ID)
+  mergeGGIR(GGIRpath, GPSdf, ID, verbose)
 }
 \arguments{
   \item{GGIRpath}{
@@ -19,6 +19,9 @@
   }
   \item{ID}{
     ID of participant to match
+  }
+  \item{verbose}{
+    See \link{hbGPS}
   }
 }
 \value{

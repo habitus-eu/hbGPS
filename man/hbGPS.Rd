@@ -17,7 +17,9 @@
          threshold_snr_ratio = 50,
          tz = "",
          time_format =  "\%d/\%m/\%Y \%H:\%M:\%SO",
-         GGIRpath = NULL)
+         GGIRpath = NULL,
+         verbose = TRUE,
+         outputFormat = "default")
 }
 \arguments{
   \item{gps_file}{
@@ -52,6 +54,13 @@
   }
   \item{GGIRpath}{
     Path to GGIR time series ouput folder (ms5.outraw)
+  }
+  \item{verbose}{
+    Booelean to indicate whether output to console should be verbose.
+  }
+  \item{outputFormat}{
+    Format in which the output should be stored, e.g. PALMS will attempt to 
+    immitate PALMS output.
   }
 
 }

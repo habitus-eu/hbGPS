@@ -2,6 +2,25 @@ deriveTrips = function(df, tz, minTripDur, mintripDist_m) {
   # Derive segments
   Segs = deriveSegments(df)
   
+  df$mot = 0
+  df$iov = 0
+  # Classify per segment the MOT and IOV
+  for (i in 1:nrow(Segs)) {
+    if (Segs$state[i] > 2) {
+      # Mode of transport: vehicle (3), bycicle (2), walking (1)
+      # Following speed thresholds are based on Carlson et al MSSE 2015
+      # enhanced with OR statement in case majority of segment was classified as vehicle
+      mot = ifelse(test = Segs$p90speed_kmh[i] >= 35 | Segs$vehicle[i] == TRUE, yes = 3, no =
+                     ifelse(test = Segs$p90speed_kmh[i] >= 10, yes = 2, no = 1))
+      # iov: Indoor (1) outdoor (2) vehicle (3)
+      # Note that this copied mot classification for vehicle
+      iov = ifelse(mot == 3, yes = 3, no =
+                     ifelse(Segs$indoor[i] == FALSE, yes = 2, no = 1))
+      df$mot[Segs$t0[i]:Segs$t1[i]] = mot
+      df$iov[Segs$t0[i]:Segs$t1[i]] = iov
+    }
+  }
+  
   # Derive trips from segments
   Segs$trip = 0 # default, not a trip
   Segs$trip[which(Segs$state > 2)] = 1 # trips (because 1 is indoor and 2 is stationary
@@ -25,11 +44,11 @@ deriveTrips = function(df, tz, minTripDur, mintripDist_m) {
   df$tripAveIncl_deg = 0 #df$tripmaxIncl_deg = 
   cnt = 1
   for (j in 1:length(tripStart)) {
-    s0 = as.POSIXct(Segs$t0[tripStart[j]], tz = tz, origin = "1970-01-01")
-    s1 = as.POSIXct(Segs$t1[tripEnd[j]], tz = tz, origin = "1970-01-01")
+    s0 = as.POSIXct(Segs$time_t0[tripStart[j]], tz = tz, origin = "1970-01-01")
+    s1 = as.POSIXct(Segs$time_t1[tripEnd[j]], tz = tz, origin = "1970-01-01")
     tripInd = which(df$time >= s0 & df$time <= s1)
     # trip duration in minutes
-    tripDur = (Segs$t1[tripEnd[j]] - Segs$t0[tripStart[j]])
+    tripDur = (Segs$time_t1[tripEnd[j]] - Segs$time_t0[tripStart[j]])
     tripDist_m = sum(abs(df$distance_m[tripInd]))
     maxTimeGap = max(df$deltaTime[tripInd])
     tripIncl = mean(df$inclination_deg[tripInd])
