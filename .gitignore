@@ -49,7 +49,3 @@ po/*~
 rsconnect/
 
 *.RProj
-
-# Development scripts
-inst/main.R
-inst/runGGIR.R

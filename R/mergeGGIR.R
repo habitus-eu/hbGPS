@@ -11,7 +11,6 @@ mergeGGIR = function(GGIRpath, GPSdf, ID, verbose) {
   GGIR_ts_paths = dir(items[grep(pattern = "behavioralcodes", x = basename(items), invert = TRUE)][1], full.names = TRUE)
   GGIR_ts_path = GGIR_ts_paths[grep(pattern = ID, x = GGIR_ts_paths, value = FALSE)]
   
-  
   log_acc = 1
   if (!is.null(GGIR_ts_path) | !is.null(GGIR_legend)) {
     log_acc = 2
@@ -56,13 +55,13 @@ mergeGGIR = function(GGIRpath, GPSdf, ID, verbose) {
   if (log_acc == 1) {
     warning("acc file path is NULL")
   } else if (log_acc == 2) {
-    if (!file.exists(GGIR_ts_path)) warning(paste0(GGIR_ts_path, " does not exist"))
-    if (!file.exists(GGIR_legend)) warning(paste0(GGIR_legend, " does not exist"))
+    if (!file.exists(GGIR_ts_path)) warning(paste0("path ", GGIR_ts_path, " does not exist"), call. = FALSE)
+    if (!file.exists(GGIR_legend)) warning(paste0("path ", GGIR_legend, " does not exist"), call. = FALSE)
   } else if (log_acc == 3) {
-    warning("Acceleromter data does not overlap with GPS data")
+    warning(paste0("Accelerometer data for ID ", ID ," does not overlap with GPS data"), call. = FALSE)
   } else if (log_acc == 4) {
-    warning(paste0("Acceleromter data does not come with more than 30% valid",
-                   " data during overlapping interval"))
+    warning(paste0("Acceleromter data for ID ", ID ," does not come with more than 30% valid",
+                   " data during overlapping interval"), call. = FALSE)
   # } else if (log_acc == 0) {
     # if (verbose == TRUE) cat("\n(v) GGIR time series merged with GPS time series")
   }

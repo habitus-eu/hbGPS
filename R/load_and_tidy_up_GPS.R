@@ -9,6 +9,8 @@ load_and_tidy_up_GPS = function(gps_file, idloc = NULL, tz = "", time_format = "
   }
   if (idloc == 2) {
     ID = unlist(strsplit(basename(gps_file), "_"))[1]
+  } else if (idloc == 6) {
+    ID = unlist(strsplit(basename(gps_file), "[.]"))[1]
   }
   
   #===========================================
@@ -22,7 +24,6 @@ load_and_tidy_up_GPS = function(gps_file, idloc = NULL, tz = "", time_format = "
   colnames(df) = gsub(pattern = "longitude", replacement = "lon", x = colnames(df))
   colnames(df) = gsub(pattern = "nsat [(]used/view[)]", replacement = "nsat_uv", x = colnames(df))
   colnames(df) = gsub(pattern = "sat info [(]sid-snr[)]", replacement = "satinfo", x = colnames(df))
-  
   # cat(paste0("\nLATITUDE ", mean(df$lat), " longitude ", mean(df$lon), "\n"))
   # Time
   if (length(grep(pattern = "sensecam", x = colnames(df))) > 0) {
@@ -58,10 +59,9 @@ load_and_tidy_up_GPS = function(gps_file, idloc = NULL, tz = "", time_format = "
   if ("e/w" %in% colnames(df) & all(df$lon > 0)) {
     df$lon = df$lon * ifelse(df$`e/w` == "W", yes = -1, no = 1)
   }
-  
   # Flip lat if coordinates are in the south
   if ("n/s" %in% colnames(df) & all(df$lat > 0)) {
-    df$lat = df$lat * ifelse(df$`n/a` == "S", yes = -1, no = 1)
+    df$lat = df$lat * ifelse(df$`n/s` == "S", yes = -1, no = 1)
   }
   
   invisible(list(df = df, ID = ID))

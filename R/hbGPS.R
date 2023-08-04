@@ -42,16 +42,16 @@ hbGPS = function(gps_file = NULL,
   }
   
   for (filei in gps_file) {
-    if (verbose == TRUE) cat(paste0("\n", basename(gps_file)))
+    if (verbose == TRUE) cat(paste0("\n", basename(filei)))
     # Load GPS file csv
-    out = load_and_tidy_up_GPS(gps_file = gps_file,
+    out = load_and_tidy_up_GPS(gps_file = filei,
                                idloc = idloc,
                                tz = tz,
                                time_format = time_format)
     D = out$df
     ID = out$ID
     rm(out)
-    
+
     #====================================
     # Merge with accelerometer output
     # Do this early on, such that there is room for using GGIR output in the GPS processing
@@ -59,9 +59,8 @@ hbGPS = function(gps_file = NULL,
     D = MD$GPSdf
     log_acc = MD$log_acc
     rm(MD)
-    
     # Prepare output filenames
-    outfn = unlist(strsplit(basename(gps_file), split = "[.]csv"))
+    outfn = unlist(strsplit(basename(filei), split = "[.]csv"))
     pdffile = paste0(outputDir, "/", outfn, "_", ID, ".pdf")
     shpfile =  paste0(outputDir, "/", outfn, "_", ID, ".shp")
     
@@ -107,7 +106,7 @@ hbGPS = function(gps_file = NULL,
     D$state = short_breaks(x = D$state, threshold = maxBreakLengthSecond)
     
     D$state[which(D$indoor == TRUE & D$state != 3)] = 1
-    
+
     # remove tagged data
     i99 = which(D$state == 99)
     if (length(i99) > 0) {
@@ -123,16 +122,12 @@ hbGPS = function(gps_file = NULL,
     D = deriveTrips(df = D, tz = tz,
                     minTripDur = minTripDur,
                     mintripDist_m = mintripDist_m)
-    
-    
+
     # convert units back to degrees
-    D$lat = units::as_units(D$lat, "radians")
     D$lat = units::set_units(D$lat, "degrees")
-    D$lon = units::as_units(D$lon, "radians")
     D$lon = units::set_units(D$lon, "degrees")
     
     Ntrips = length(unique(D$trip)) - 1 
-    
     
     # Add factor variable with statenames
     statenames = c("indoor/tunnel", # state 1
@@ -156,10 +151,11 @@ hbGPS = function(gps_file = NULL,
         D$fixTypeCode = -1 # unclear whether palmsplusr needs this
         
       } else {
-        stop("\nCannot imitate PALMS output without merged GGIR output")
+        warning(paste0("\nWithout merged GGIR output for ID ", ID, " we cannot imitate PALMS output, storage skipped"), call. = FALSE)
+        next
       }
     }
-    outputFileName = paste0(outputFolder, "/", unlist(strsplit(basename(gps_file), "[.]csv"))[1], ".csv")
+    outputFileName = paste0(outputFolder, "/", unlist(strsplit(basename(filei), "[.]csv"))[1], ".csv")
     data.table::fwrite(D, file = outputFileName)
   }
   return(D)
