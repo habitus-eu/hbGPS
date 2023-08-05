@@ -4,7 +4,12 @@ graphics.off()
 # # Run GGIR
 # dirGGIR = "D:/Code/GGIR/R"
 # for (i in dir(dirGGIR, full.names = TRUE)) source(i)
-# 
+
+AccThresholds = c(0, 100, 2500, 10000, 15000) * c(5/60)
+AccThresholds = round(AccThresholds, digits = 2)
+
+
+
 # GGIR(datadir = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/BEtestdata/ACC",
 #      outputdir = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/BEtestdata",
 #      dataFormat = "actigraph_csv",
@@ -13,9 +18,9 @@ graphics.off()
 #      overwrite = FALSE,
 #      do.report = c(2),
 #      windowsizes = c(30, 900, 3600),
-#      threshold.in = round(100 * (5/60), digits = 2),
-#      threshold.mod = round(2500 * (5/60), digits = 2),
-#      threshold.vig = round(10000 * (5/60), digits = 2),
+#      threshold.in = AccThresholds[2], #round(100 * (5/60), digits = 2),
+#      threshold.mod = AccThresholds[3], #round(2500 * (5/60), digits = 2),
+#      threshold.vig = AccThresholds[4], #round(10000 * (5/60), digits = 2),
 #      extEpochData_timeformat = "%m/%d/%Y %H:%M:%S", #"%m/%d/%Y",
 #      do.neishabouricounts = TRUE,
 #      acc.metric = "NeishabouriCount_x",
@@ -77,7 +82,8 @@ D = hbGPS(gps_file = gps_file,
           tz = tz,
           time_format = time_format,
           GGIRpath = GGIRpath,
-          outputFormat = "PALMS")
+          outputFormat = "PALMS",
+          AccThresholds = AccThresholds)
 
 
 timer1 = Sys.time()

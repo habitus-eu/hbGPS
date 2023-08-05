@@ -33,7 +33,7 @@ The code below shows an example of how use hbGPS in combination with R package G
 
 ### Process accelerometer data with GGIR
 
-See GGIR documentation for additional details on how to run GGIR:
+See GGIR documentation for additional details on how to use GGIR:
 https://cran.r-project.org/web/packages/GGIR/vignettes/GGIR.html
 
 
@@ -64,6 +64,9 @@ GGIR(datadir = "F:/path/to/your/data/folder",
 #### If you have Count data
 
 ```
+AccThresholds = c(100, 2500, 10000, 15000) * c(5/60) # assumes GGIR's default epoch length of 5 seconds
+AccThresholds = round(AccThresholds, digits = 2)
+
 library(GGIR)
 GGIR(datadir = "F:/path/to/your/data/folder",
      outputdir = "F:/path/to/your/output/folder",
@@ -72,9 +75,9 @@ GGIR(datadir = "F:/path/to/your/data/folder",
      overwrite = FALSE,
      do.report = c(2),
      windowsizes = c(1, 900, 3600),
-     threshold.in = round(100 * (5/60), digits = 2),
-     threshold.mod = round(2500 * (5/60), digits = 2),
-     threshold.vig = round(10000 * (5/60), digits = 2),
+     threshold.in = AccThresholds[1],
+     threshold.mod = AccThresholds[2],
+     threshold.vig = AccThresholds[3],
      extEpochData_timeformat = "%m/%d/%Y",
      do.neishabouricounts = TRUE,
      acc.metric = "NeishabouriCount_x",

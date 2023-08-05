@@ -19,7 +19,8 @@
          time_format =  "\%d/\%m/\%Y \%H:\%M:\%SO",
          GGIRpath = NULL,
          verbose = TRUE,
-         outputFormat = "default")
+         outputFormat = "default",
+         AccThresholds = NULL)
 }
 \arguments{
   \item{gps_file}{
@@ -62,7 +63,11 @@
     Format in which the output should be stored, e.g. PALMS will attempt to 
     immitate PALMS output.
   }
-
+  \item{AccThresholds}{
+    Numeric vector with acceleration cut-points to define intensity levels
+    sedentary behaviour, light, moderate, vigorous, and extra vigorougs.
+    When working with counts keep in mind that counts are epoch lenght specific.
+  }
 }
 \value{
   Data.frame with GPS time series and added classifications
