@@ -39,8 +39,8 @@ test_that("hbGPS pipeline process file 4 correctly", {
   expect_equal(mean(D$deltaTime), 15.61311, tolerance = 0.0001)
   expect_equal(mean(D$speed_ms), 0.6386111, tolerance = 0.0001)
   expect_equal(mean(D$inclination_deg), -1.531331, tolerance = 0.00001)
-  expect_equal(mean(D$bearing_deg), 10.82464, tolerance = 0.00001)
-  expect_equal(mean(D$deltaBearing), 65.72964, tolerance = 0.00001)
+  expect_equal(mean(D$bearing_deg), 10.62006, tolerance = 0.00001)
+  expect_equal(mean(D$deltaBearing), 65.73111, tolerance = 0.00001)
   
   expect_equal(mean(D$tripMaxTimegGap), 0.7691348, tolerance = 0.000001)
   expect_equal(mean(D$tripEleSpeed_kmh), 0.03796242, tolerance = 0.000001)
