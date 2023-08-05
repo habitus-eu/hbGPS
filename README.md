@@ -120,6 +120,7 @@ hbGPS(gps_file = gps_file,
       tz = "Australia/Perth", # timezone database name
       time_format = "%Y/%m/%d %H:%M:%S",
       GGIRpath = GGIRpath,
-      outputFormat = "PALMS") # alternative is "default"
+      outputFormat = "PALMS",
+      AccThresholds = AccThresholds) # alternative is "default"
 ```
 The code will store a csv file with a time series for each input gps file.
