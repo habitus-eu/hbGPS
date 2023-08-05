@@ -1,31 +1,35 @@
 rm(list = ls())
 graphics.off()
 
+AccThresholds = c(100, 2500, 10000, 15000) * c(5/60)
+AccThresholds = round(AccThresholds, digits = 2)
+# 
 # # Run GGIR
 # dirGGIR = "D:/Code/GGIR/R"
 # for (i in dir(dirGGIR, full.names = TRUE)) source(i)
-
-AccThresholds = c(0, 100, 2500, 10000, 15000) * c(5/60)
-AccThresholds = round(AccThresholds, digits = 2)
-
-
-
+# 
+# 
+# 
+# 
 # GGIR(datadir = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/BEtestdata/ACC",
 #      outputdir = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/BEtestdata",
 #      dataFormat = "actigraph_csv",
 #      idloc = 6,
 #      mode = c(1:5),
-#      overwrite = FALSE,
+#      overwrite = TRUE,
 #      do.report = c(2),
 #      windowsizes = c(30, 900, 3600),
-#      threshold.in = AccThresholds[2], #round(100 * (5/60), digits = 2),
-#      threshold.mod = AccThresholds[3], #round(2500 * (5/60), digits = 2),
-#      threshold.vig = AccThresholds[4], #round(10000 * (5/60), digits = 2),
+#      threshold.in = AccThresholds[1], #round(100 * (5/60), digits = 2),
+#      threshold.mod = AccThresholds[2], #round(2500 * (5/60), digits = 2),
+#      threshold.vig = AccThresholds[3], #round(10000 * (5/60), digits = 2),
 #      extEpochData_timeformat = "%m/%d/%Y %H:%M:%S", #"%m/%d/%Y",
 #      do.neishabouricounts = TRUE,
 #      acc.metric = "NeishabouriCount_x",
 #      HASPT.algo = "NotWorn",
 #      HASIB.algo = "NotWorn",
+#      boutdur.mvpa = c(10),
+#      boutdur.in = c(30),
+#      boutdur.lig = c(10),
 #      do.visual = TRUE,
 #      includedaycrit = 10,
 #      includenightcrit = 10,

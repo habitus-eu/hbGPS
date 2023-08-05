@@ -52,7 +52,7 @@ hbGPS = function(gps_file = NULL,
     D = out$df
     ID = out$ID
     rm(out)
-
+    
     #====================================
     # Merge with accelerometer output
     # Do this early on, such that there is room for using GGIR output in the GPS processing
@@ -107,7 +107,7 @@ hbGPS = function(gps_file = NULL,
     D$state = short_breaks(x = D$state, threshold = maxBreakLengthSecond)
     
     D$state[which(D$indoor == TRUE & D$state != 3)] = 1
-
+    
     # remove tagged data
     i99 = which(D$state == 99)
     if (length(i99) > 0) {
@@ -123,7 +123,7 @@ hbGPS = function(gps_file = NULL,
     D = deriveTrips(df = D, tz = tz,
                     minTripDur = minTripDur,
                     mintripDist_m = mintripDist_m)
-
+    
     # convert units back to degrees
     D$lat = units::set_units(D$lat, "degrees")
     D$lon = units::set_units(D$lon, "degrees")
@@ -166,6 +166,7 @@ hbGPS = function(gps_file = NULL,
         nonwear = which(D$GGIR_invalidepoch == 1)
         if (length(nonwear) > 0) D$activity[nonwear] = -2
         D$activityIntensity = -2
+        if (AccThresholds[1] != 0) AccThresholds = c(0, AccThresholds)
         for (AT in 1:length(AccThresholds)) {
           if (AT < length(AccThresholds) - 1) {
             conditionMet = which(D$activity >= AccThresholds[AT] &
@@ -184,6 +185,10 @@ hbGPS = function(gps_file = NULL,
         D$sedentaryBoutNumber = 0
         D$activityBoutNumber[grep(pattern = "_MVPA_bts_", x = D$GGIR_class_name, value = FALSE)] = 1
         D$sedentaryBoutNumber[grep(pattern = "_IN_", x = D$GGIR_class_name, value = FALSE)] = 1
+        if (length(nonwear) > 0) {
+          D$sedentaryBoutNumber[nonwear] = 0
+          D$activityBoutNumber[nonwear] = 0
+        }
         addBoutNumber = function(x) {
           dx = diff(x)
           s0 = which(dx == 1) + 1

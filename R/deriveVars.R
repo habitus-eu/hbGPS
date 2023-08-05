@@ -1,11 +1,9 @@
 deriveVars = function(D, convertUnit = TRUE) {
   D$deltaElevation = c(NA, D$height_m[2:nrow(D)] - D$height_m[1:(nrow(D) - 1)])
   
-  # Distance
-  D$lat = as.numeric(D$lat)
-  D$lon = as.numeric(D$lon)
-  
   if (convertUnit == TRUE) {
+    D$lat = as.numeric(D$lat)
+    D$lon = as.numeric(D$lon)
     D$lat = units::as_units(D$lat, "degrees")
     D$lat = units::set_units(D$lat, "radians")
     D$lon = units::as_units(D$lon, "degrees")

@@ -43,7 +43,8 @@ mergeGGIR = function(GGIRpath, GPSdf, ID, verbose) {
           # Nearest neigbour interpolate other GGIR output columns
           col2impute = c("SleepPeriodTime", "invalidepoch", "guider", "window", "class_id")
           GS = as.data.frame(GGIRread::resample(raw = as.matrix(G[, col2impute]),
-                                                rawTime = G$timenum, time = GPSdf$time, stop = nrow(G), type = 2))
+                                                rawTime = G$timenum,
+                                                time = GPSdf$time, stop = nrow(G), type = 2))
           colnames(GS) = paste0("GGIR_", col2impute)
           # turn class_id to factor to integrate the class labels
           GS$GGIR_class_id = cut(x = GS$GGIR_class_id, breaks = c(Legend$class_id - 0.1, 100), labels = Legend$class_name)
