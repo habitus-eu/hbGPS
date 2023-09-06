@@ -1,18 +1,124 @@
 hbGPS = function(gps_file = NULL,
-                 outputDir = NULL,
-                 idloc = 1,
-                 maxBreakLengthSeconds = 120,
-                 minTripDur = 60,
-                 mintripDist_m = 100,
-                 threshold_snr = 225,
-                 threshold_snr_ratio = 50,
-                 tz = "",
-                 time_format = "%d/%m/%Y %H:%M:%SO",
                  GGIRpath = NULL,
-                 verbose = TRUE,
-                 outputFormat = "default",
-                 AccThresholds = NULL) {
+                 outputDir = NULL,
+                 configFile = NULL,
+                 verbose = TRUE, ...) {
+  input = list(...)
+  # Load arguments from configFile
+  argNames = names(input)
+  if (!is.null(configFile)) {
+    config = data.table::fread(file = configFile, stringsAsFactors = FALSE, data.table = FALSE)
+    if (nrow(config) > 1) {
+      for (ci in 1:nrow(config)) {
+        varName = as.character(config[ci, 1])
+        # Only overwrite with config file value if it is not provided by user
+        if (varName %in% c(argNames, "") == FALSE) {
+          if (config$argument[ci] == "idloc") {
+            idloc = as.numeric(config$value[ci])
+          } else if (config$argument[ci] == "maxBreakLengthSeconds") {
+            maxBreakLengthSeconds = as.numeric(config$value[ci])
+          } else if (config$argument[ci] == "minTripDur") {
+            minTripDur = as.numeric(config$value[ci])
+          } else if (config$argument[ci] == "mintripDist_m") {
+            mintripDist_m = as.numeric(config$value[ci])
+          } else if (config$argument[ci] == "threshold_snr") {
+            threshold_snr = as.numeric(config$value[ci])
+          } else if (config$argument[ci] == "threshold_snr_ratio") {
+            threshold_snr_ratio = as.numeric(config$value[ci])
+          } else if (config$argument[ci] == "tz") {
+            tz = as.character(config$value[ci])
+          } else if (config$argument[ci] == "time_format") {
+            time_format = as.character(config$value[ci])
+          } else if (config$argument[ci] == "outputFormat") {
+            outputFormat = as.character(config$value[ci])
+          } else if (config$argument[ci] == "AccThresholds") {
+            if (grepl("c\\(", config$value[ci])) { # vector
+              tmp = c(gsub(pattern = "c|\\(|\\)", x = config$value[ci], replacement = ""))
+              tmp = unlist(strsplit(tmp, ","))
+              suppressWarnings(try(expr = {isna = is.na(as.numeric(tmp[1]))}, silent = TRUE))
+              # if (length(isna) == 0) isna = FALSE
+              # if (isna == TRUE) {
+              #   newValue = tmp # vector of characters
+              # } else {
+              newValue = as.numeric(tmp) # vector of numbers
+              # }
+              AccThresholds = newValue
+            }
+          }
+        }
+      }
+    }
+  }
+  # Defaults if argument is not provided by user or configfile
+  name = "idloc"
+  if (name %in% argNames) {
+    idloc = input[[name]]
+  } else if (!exists(name)) {
+    idloc = 2
+  }
+  name = "maxBreakLengthSeconds"
+  if (name %in% argNames) {
+    maxBreakLengthSeconds = input[[name]]
+  } else if (!exists(name)) {
+    maxBreakLengthSeconds = 120
+  }
   
+  name = "minTripDur"
+  if (name %in% argNames) {
+    minTripDur = input[[name]]
+  } else if (!exists(name)) {
+    minTripDur = 60
+  }
+  
+  name = "mintripDist_m"
+  if (name %in% argNames) {
+    mintripDist_m = input[[name]]
+  } else if (!exists(name)) {
+    mintripDist_m = 100
+  }
+  
+  name = "threshold_snr"
+  if (name %in% argNames) {
+    threshold_snr = input[[name]]
+  } else if (!exists(name)) {
+    threshold_snr = 225
+  }
+  
+  name = "threshold_snr_ratio"
+  if (name %in% argNames) {
+    threshold_snr_ratio = input[[name]]
+  } else if (!exists(name)) {
+    threshold_snr_ratio = 50
+  }
+  
+  name = "tz"
+  if (name %in% argNames) {
+    tz = input[[name]]
+  } else if (!exists(name)) {
+    tz = ""
+  }
+  name = "time_format"
+  if (name %in% argNames) {
+    time_format = input[[name]]
+  } else if (!exists(name)) {
+    time_format = "%d/%m/%Y %H:%M:%SO"
+  }
+  
+  name = "outputFormat"
+  if (name %in% argNames) {
+    outputFormat = input[[name]]
+  } else if (!exists(name)) {
+    outputFormat = "default"
+  }
+  
+  name = "AccThresholds"
+  if (name %in% argNames) {
+    AccThresholds = input[[name]]
+  } else if (!exists(name)) {
+    AccThresholds = NULL
+  }
+  
+  #--------------------------------
   outputFolder = paste0(outputDir, "/hbGPSoutput")
   if (!dir.exists(outputFolder)) {
     dir.create(outputFolder)

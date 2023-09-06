@@ -48,7 +48,22 @@ test_that("hbGPS pipeline process file 4 correctly", {
   # Finally a crude global check to see whether anything has changed
   expect_equal(sum(rowSums(D[,c(11:15, 17:41)]), na.rm = TRUE), 26828374, tolerance = 0.1)
   
+  # Check that it also works with a configFile
+  DC = hbGPS(gps_file = gps_file,
+            outputDir = outdir,
+            idloc = 2,
+            tz = "Asia/Shanghai",
+            GGIRpath = "./ms5.outraw",
+            time_format = "%d/%m/%Y %H:%M:%S",
+            configFile =  system.file("testfiles/config_hbgps.csv", package = "hbGPS"))
+  expect_equal(nrow(DC), 20029)
+  expect_equal(ncol(DC), 44)
+  expect_equal(length(unique(DC$trip)), 39)
+  expect_equal(mean(DC$GGIR_ACC), 26.19259, tolerance = 0.0001)
+  expect_equal(mean(DC$speed_ms), 0.6386111, tolerance = 0.0001)
+  
   # Clean up
   if (dir.exists(dn))  unlink(dn, recursive = TRUE)
   if (dir.exists(outdir))  unlink(outdir, recursive = TRUE)
+  if (dir.exists("./ms5.outraw"))  unlink("./ms5.outraw", recursive = TRUE)
 })

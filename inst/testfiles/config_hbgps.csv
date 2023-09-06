@@ -1,0 +1,11 @@
+argument,value,context
+idloc,2,general
+maxBreakLengthSeconds,120,general
+minTripDur,60,general
+minTripDist_m,100,general
+threshold_snr,225,general
+threshold_snr_ratio,50,general
+tz,,general
+time_format,%d/%m/%Y %H:%M:%SO,general
+outputFormat,default,general
+AccThresholds,,general
