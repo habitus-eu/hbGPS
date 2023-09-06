@@ -6,12 +6,31 @@ graphics.off()
 
 # gps_file = "/media/vincent/DATA/Habitus/gps/1.csv"
 # tz = "Canada/Mountain" # <= ! adjust for each dataset
-gps_file = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/gps_playce/41023_B37-20160722.csv"
-tz = "Australia/Perth"
+
+testdata = "BE" # playce, BE
+if (testdata == "playce") {
+  gps_file = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/gps_playce/41023_B37-20160722.csv"
+  outputDir = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/GPS_R"
+  GGIRpath = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/output_acc_playce/meta/ms5.outraw"
+  time_format = "%Y/%m/%d %H:%M:%S"
+  tz = "Australia/Perth"
+} else if (testdata == "BE") {
+  gps_file = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/BEtestdata/GPS"
+  outputDir = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/BEtestdata"
+  GGIRpath = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/BEtestdata/output_ACC/meta/ms5.outraw"
+  time_format = "%Y/%m/%d %H:%M:%S"
+  tz = "Europe/Brussels"
+} else if (testdata == "own") {
+  gps_file = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/BEtestdata/GPS"
+  outputDir = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/BEtestdata"
+  GGIRpath = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/BEtestdata/output_ACC/meta/ms5.outraw"
+  time_format = "%Y/%m/%d %H:%M:%S"
+  tz = "Europe/Brussels"
+}
+
 
 # gps_file = "/media/vincent/DATA/Habitus/GPS_R/sensecam cycling study for jasper/epoch-level from MSSE paper 2023.6.6.csv"
-outputDir = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/GPS_R"
-time_format = "%Y/%m/%d %H:%M:%S"
+
 
 maxBreakLengthSeconds = 120 # seconds #120
 minTripDur = 60 # seconds
@@ -25,11 +44,16 @@ do.mapview = TRUE
 visual_inspect_ts = FALSE
 
 folderWithFunctions = "D:/Code/hbGPS/R"
-idloc = 2
+idloc = 6 #2
+
+AccThresholds = c(100, 2500, 10000, 15000) * c(5/60) # assumes GGIR's default epoch length of 5 seconds
+AccThresholds = round(AccThresholds, digits = 2)
+
 
 # assumption is that GGIR has already been run
 # Specify GGIR output folder
-GGIRpath = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/output_acc_playce/meta/ms5.outraw"
+
+
 
 
 #===========================================
@@ -38,17 +62,19 @@ GGIRpath = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/output_acc_p
 for (i in dir(folderWithFunctions, full.names = TRUE)) source(i)
 timer0 = Sys.time()
 D = hbGPS(gps_file = gps_file,
+          GGIRpath = GGIRpath,
           outputDir = outputDir,
           idloc = idloc,
-          maxBreakLengthSeconds = maxBreakLengthSeconds,
-          minTripDur = minTripDur,
-          mintripDist_m = mintripDist_m,
-          threshold_snr = threshold_snr,
-          threshold_snr_ratio = threshold_snr_ratio,
+          # maxBreakLengthSeconds = maxBreakLengthSeconds,
+          # minTripDur = minTripDur,
+          # mintripDist_m = mintripDist_m,
+          # threshold_snr = threshold_snr,
+          # threshold_snr_ratio = threshold_snr_ratio,
           tz = tz,
           time_format = time_format,
-          GGIRpath = GGIRpath,
-          outputFormat = "PALMS")
+          outputFormat = "PALMS",
+          AccThresholds = AccThresholds,
+          configFile = "D:/Code/HabitusGUI/inst/testfiles_hbgps/config_hbgps.csv")
 
 
 timer1 = Sys.time()
