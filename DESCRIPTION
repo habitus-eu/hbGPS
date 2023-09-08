@@ -2,7 +2,7 @@ Package: hbGPS
 Type: Package
 Title: Process GPS Data For Human Behaviour Research
 Version: 0.0.1
-Date: 2023-07-24
+Date: 2023-09-08
 Authors@R: c(person("Vincent T","van Hees",role=c("aut","cre"),
                   email="v.vanhees@accelting.com"),
              person("SDU Denmark",  role = c("cph", "fnd")))
