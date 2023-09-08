@@ -12,6 +12,7 @@
         outputDir = NULL,
         configFile = NULL,
         verbose = TRUE,
+        return_object = FALSE,
         ...)
 }
 \arguments{
@@ -28,7 +29,10 @@
     Character path to csv file with columns argument, value and context
   }
   \item{verbose}{
-    Booelean to indicate whether output to console should be verbose.
+    Boolean to indicate whether output to console should be verbose.
+  }
+  \item{return_object}{
+    Boolean to indicate whether data object should be returned as function output
   }
   \item{...}{
     Any of the parameters used by hbGPS. These are documented in the

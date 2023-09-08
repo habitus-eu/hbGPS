@@ -59,7 +59,7 @@ maxBreakLengthSeconds = 120 # seconds #120
 minTripDur = 60 # seconds
 threshold_snr = 225
 threshold_snr_ratio = 50
-mintripDist_m = 100 # meters
+minTripDist_m = 100 # meters
 # SMOOTH_INDOOR = FALSE
 write_shp = FALSE
 do_pdf_plot = FALSE
@@ -80,7 +80,7 @@ D = hbGPS(gps_file = gps_file,
           idloc = idloc,
           maxBreakLengthSeconds = maxBreakLengthSeconds,
           minTripDur = minTripDur,
-          mintripDist_m = mintripDist_m,
+          minTripDist_m = minTripDist_m,
           threshold_snr = threshold_snr,
           threshold_snr_ratio = threshold_snr_ratio,
           tz = tz,

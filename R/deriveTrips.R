@@ -1,4 +1,4 @@
-deriveTrips = function(df, tz, minTripDur, mintripDist_m) {
+deriveTrips = function(df, tz, minTripDur, minTripDist_m) {
   # Derive segments
   Segs = deriveSegments(df)
   
@@ -53,7 +53,7 @@ deriveTrips = function(df, tz, minTripDur, mintripDist_m) {
     maxTimeGap = max(df$deltaTime[tripInd])
     tripIncl = mean(df$inclination_deg[tripInd])
     
-    if (tripDur > minTripDur & tripDist_m > mintripDist_m) {
+    if (tripDur > minTripDur & tripDist_m > minTripDist_m) {
       df$trip[tripInd] = cnt #Segs$trip[tripStart[j]]
       N = length(tripInd)
       df$N[tripInd] = N #Segs$trip[tripStart[j]]

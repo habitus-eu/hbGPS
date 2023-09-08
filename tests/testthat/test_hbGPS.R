@@ -24,7 +24,8 @@ test_that("hbGPS pipeline process file 4 correctly", {
             idloc = 2,
             tz = "Asia/Shanghai",
             GGIRpath = "./ms5.outraw",
-            time_format = "%d/%m/%Y %H:%M:%S")
+            time_format = "%d/%m/%Y %H:%M:%S",
+            return_object = TRUE)
   
   expect_equal(nrow(D), 20029)
   expect_equal(ncol(D), 44)
@@ -55,7 +56,8 @@ test_that("hbGPS pipeline process file 4 correctly", {
             tz = "Asia/Shanghai",
             GGIRpath = "./ms5.outraw",
             time_format = "%d/%m/%Y %H:%M:%S",
-            configFile =  system.file("testfiles/config_hbgps.csv", package = "hbGPS"))
+            configFile =  system.file("testfiles/config_hbGPS.csv", package = "hbGPS"),
+            return_object = TRUE)
   expect_equal(nrow(DC), 20029)
   expect_equal(ncol(DC), 44)
   expect_equal(length(unique(DC$trip)), 39)

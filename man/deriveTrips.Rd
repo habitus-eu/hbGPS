@@ -7,7 +7,7 @@
   Derive trips from GPS time series data
 }
 \usage{
-  deriveTrips(df, tz, minTripDur, mintripDist_m)
+  deriveTrips(df, tz, minTripDur, minTripDist_m)
 }
 \arguments{
   \item{df}{
@@ -19,7 +19,7 @@
   \item{minTripDur}{
     Numeric minimum trip duration
   }
-  \item{mintripDist_m}{
+  \item{minTripDist_m}{
     Numeric minimum trip distance
   }
 }

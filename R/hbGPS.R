@@ -2,7 +2,8 @@ hbGPS = function(gps_file = NULL,
                  GGIRpath = NULL,
                  outputDir = NULL,
                  configFile = NULL,
-                 verbose = TRUE, ...) {
+                 verbose = TRUE,
+                 return_object = FALSE, ...) {
   input = list(...)
   # Load arguments from configFile
   argNames = names(input)
@@ -19,8 +20,8 @@ hbGPS = function(gps_file = NULL,
             maxBreakLengthSeconds = as.numeric(config$value[ci])
           } else if (config$argument[ci] == "minTripDur") {
             minTripDur = as.numeric(config$value[ci])
-          } else if (config$argument[ci] == "mintripDist_m") {
-            mintripDist_m = as.numeric(config$value[ci])
+          } else if (config$argument[ci] == "minTripDist_m") {
+            minTripDist_m = as.numeric(config$value[ci])
           } else if (config$argument[ci] == "threshold_snr") {
             threshold_snr = as.numeric(config$value[ci])
           } else if (config$argument[ci] == "threshold_snr_ratio") {
@@ -70,11 +71,11 @@ hbGPS = function(gps_file = NULL,
     minTripDur = 60
   }
   
-  name = "mintripDist_m"
+  name = "minTripDist_m"
   if (name %in% argNames) {
-    mintripDist_m = input[[name]]
+    minTripDist_m = input[[name]]
   } else if (!exists(name)) {
-    mintripDist_m = 100
+    minTripDist_m = 100
   }
   
   name = "threshold_snr"
@@ -117,7 +118,6 @@ hbGPS = function(gps_file = NULL,
   } else if (!exists(name)) {
     AccThresholds = NULL
   }
-  
   #--------------------------------
   outputFolder = paste0(outputDir, "/hbGPSoutput")
   if (!dir.exists(outputFolder)) {
@@ -129,7 +129,7 @@ hbGPS = function(gps_file = NULL,
                          idloc = idloc,
                          maxBreakLengthSeconds = maxBreakLengthSeconds,
                          minTripDur = minTripDur,
-                         mintripDist_m = mintripDist_m,
+                         minTripDist_m = minTripDist_m,
                          threshold_snr = threshold_snr,
                          threshold_snr_ratio = threshold_snr_ratio,
                          tz = tz,
@@ -228,7 +228,7 @@ hbGPS = function(gps_file = NULL,
     # No state classification here or further down
     D = deriveTrips(df = D, tz = tz,
                     minTripDur = minTripDur,
-                    mintripDist_m = mintripDist_m)
+                    minTripDist_m = minTripDist_m)
     
     # convert units back to degrees
     D$lat = units::set_units(D$lat, "degrees")
@@ -245,84 +245,21 @@ hbGPS = function(gps_file = NULL,
                    "15-35 km/h", ">35 km/h") # state 7 8
     D$statenames = cut(D$state, breaks = seq(0.5, 8.5, 1), labels = statenames)
     
-    
     if (verbose == TRUE) cat(paste0(" => ", Ntrips, " trips"))
-    
     if (outputFormat == "PALMS") {
-      if (length(grep(pattern = "GGIR", x = colnames(D), ignore.case = TRUE)) > 0) {
-        # Rename existing columns
-        names(D)[which(names(D) == "trip")] = "tripNumber"
-        names(D)[which(names(D) == "mot")] = "tripMOT"
-        names(D)[which(names(D) == "time")] = "dateTime"
-        names(D)[which(names(D) == "GGIR_ACC")] = "activity"
-        D$identifier = ID
-        
-        #-----------------------------------------------------------------
-        # Add missing columns
-        D$dow = as.POSIXlt(D$time)$wday
-        
-        D$fixTypeCode = -1 # unclear whether palmsplusr needs this
-        D$tripType = 0 # default stationary (tripType 0 is also stationary)
-        D$tripType[which(D$state == 3)] = 3 #pause point
-        D$tripType[which(duplicated(D$tripNumber) == FALSE & D$tripNumber != 0)] = 1 #pause point
-        D$tripType[which(rev(duplicated(rev(D$tripNumber)) == FALSE & rev(D$tripNumber) != 0))] = 4 #pause point
-        # Note: palmsplusr does not seem to be needing trip midpoints (tripType = 2), so we skip those
-        
-        # Add accelerometer based columns
-        nonwear = which(D$GGIR_invalidepoch == 1)
-        if (length(nonwear) > 0) D$activity[nonwear] = -2
-        D$activityIntensity = -2
-        if (AccThresholds[1] != 0) AccThresholds = c(0, AccThresholds)
-        for (AT in 1:length(AccThresholds)) {
-          if (AT < length(AccThresholds) - 1) {
-            conditionMet = which(D$activity >= AccThresholds[AT] &
-                                   D$activity < AccThresholds[AT + 1])
-          } else {
-            conditionMet = which(D$activity >= AccThresholds[AT])
-            
-          }
-          if (length(conditionMet) > 0) {
-            D$activityIntensity[conditionMet] = AT - 1
-          }
-        }
-        D$activityIntensity[nonwear] = -2
-        D$GGIR_class_name = format(D$GGIR_class_id)
-        D$activityBoutNumber = 0
-        D$sedentaryBoutNumber = 0
-        D$activityBoutNumber[grep(pattern = "_MVPA_bts_", x = D$GGIR_class_name, value = FALSE)] = 1
-        D$sedentaryBoutNumber[grep(pattern = "_IN_", x = D$GGIR_class_name, value = FALSE)] = 1
-        if (length(nonwear) > 0) {
-          D$sedentaryBoutNumber[nonwear] = 0
-          D$activityBoutNumber[nonwear] = 0
-        }
-        addBoutNumber = function(x) {
-          dx = diff(x)
-          s0 = which(dx == 1) + 1
-          s1 = which(dx == -1)
-          if (s1[1] < s0[1]) s1 = s1[-1]
-          if (length(s0) > length(s1)) s0 = s0[1:length(s1)]
-          cnt = 1
-          for (si in 1:length(s0)) {
-            x[s0[si]:s1[si]] = cnt
-            cnt = cnt + 1
-          }
-          return(x)
-        }
-        D$activityBoutNumber = addBoutNumber(D$activityBoutNumber)
-        D$sedentaryBoutNumber = addBoutNumber(D$sedentaryBoutNumber)
-        # force time to character format to allign it with how PALMS stored timestamps
-        D$dateTime = format(D$dateTime, format = "%d/%m/%Y  %H:%M:%S")
-        D = D[, c("identifier", "dateTime", "dow", "lat", "lon", 
-                  "fixTypeCode", "iov", "tripNumber", "tripType", "tripMOT", 
-                  "activity", "activityIntensity", "activityBoutNumber",
-                  "sedentaryBoutNumber")]
-      } else {
-        if (verbose == TRUE) cat(" => not exported because no matching GGIR data")
-        next
-      }
+      out = imitatePALMSformat(D = D, ID = ID,
+                               AccThresholds = AccThresholds,
+                               verbose = verbose)
+      D = out$D
+      runNext = out$runNext
+      if (runNext == TRUE) next
     }
     outputFileName = paste0(outputFolder, "/", unlist(strsplit(basename(filei), "[.]csv"))[1], ".csv")
     data.table::fwrite(D, file = outputFileName)
   }
-  return(D)
+  if (return_object == TRUE) {
+    return(D)
+  } else {
+    return()
+  }
 }

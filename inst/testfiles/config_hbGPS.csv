@@ -7,5 +7,5 @@ threshold_snr,225,noise
 threshold_snr_ratio,50,noise
 tz,Europe/Amsterdam,general
 time_format,%Y/%m/%d %H:%M:%S,general
-outputFormat,PALMS,general
+outputFormat,default,general
 AccThresholds,"c(8.33, 208.33, 833.33, 1250)",accelerometer
