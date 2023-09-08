@@ -2,6 +2,14 @@ mergeGGIR = function(GGIRpath, GPSdf, ID, verbose) {
   # GGIRpath: path to ms5.rawout folder produced by GGIR
   # GPSdf: dataframe create by rest of code
   
+  # If user by accident specified GGIR output folder then attempt
+  # to update path to specify the ms5.outraw subfolder inside it
+  if (length(grep(pattern = "ms5.outraw", x = GGIRpath)) != 0) {
+    newGGIRpath = paste0(GGIRpath, "/meta/ms5.outraw")
+    if (dir.exists(newGGIRpath)) {
+      GGIRpath = newGGIRpath
+    }
+  }
   # Identify matching GGIR output:
   items = dir(GGIRpath, full.names = TRUE)
   GGIR_legend = items[grep(pattern = "behavioralcodes", x = basename(items))]
