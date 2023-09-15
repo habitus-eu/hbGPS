@@ -246,6 +246,25 @@ hbGPS = function(gps_file = NULL,
     D$statenames = cut(D$state, breaks = seq(0.5, 8.5, 1), labels = statenames)
     
     if (verbose == TRUE) cat(paste0(" => ", Ntrips, " trips"))
+    
+    # print motivation for excluding files
+    if (log_acc == 1) {
+      if (verbose == TRUE) cat("\n  (X): GPS ID not found in ACC files")
+    } else if (log_acc == 2) {
+      if (verbose == TRUE) cat("\n  (X): ACC class dictionary not identify")
+    } else if (log_acc == 3) {
+      if (!file.exists(GGIR_ts_path) & verbose == TRUE) cat(paste0("\n  (X): path ", GGIR_ts_path, " does not exist"))
+      if (!file.exists(GGIR_legend) & verbose == TRUE) cat(paste0("\n  (X): path ", GGIR_legend, " does not exist"))
+    } else if (log_acc == 4) {
+      if (verbose == TRUE) cat(paste0("\n  (X): ACC ID does not overlap with GPS data"))
+    } else if (log_acc == 5) {
+      if (verbose == TRUE) {
+        cat(paste0("\n  (X): Less than 30% of matching ACC data is valid"))
+      }
+    } else if (log_acc == 0) {
+      cat(paste0("\n  (V)"))
+    }
+    
     if (outputFormat == "PALMS") {
       out = imitatePALMSformat(D = D, ID = ID,
                                AccThresholds = AccThresholds,

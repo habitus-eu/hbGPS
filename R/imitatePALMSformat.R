@@ -68,7 +68,7 @@ imitatePALMSformat = function(D, ID, AccThresholds, verbose = TRUE) {
               "sedentaryBoutNumber")]
     runNext = FALSE
   } else {
-    if (verbose == TRUE) cat(" => not exported because no matching GGIR data")
+    # if (verbose == TRUE) cat(" => therefore not exported")
     runNext = TRUE
     D = NULL
   }
