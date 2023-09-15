@@ -63,21 +63,22 @@ mergeGGIR = function(GGIRpath, GPSdf, ID, verbose) {
       }
     }
   }
-  # if (log_acc == 1) {
-  #   if (verbose == TRUE) cat("\n  ID not found in Accelerometer data")
-  # } else if (log_acc == 2) {
-  #   if (verbose == TRUE) cat("\n  acc file path is NULL")
-  # } else if (log_acc == 3) {
-  #   if (!file.exists(GGIR_ts_path) & verbose == TRUE) cat(paste0("\n  path ", GGIR_ts_path, " does not exist"))
-  #   if (!file.exists(GGIR_legend) & verbose == TRUE) cat(paste0("\n  path ", GGIR_legend, " does not exist"))
-  # } else if (log_acc == 4) {
-  #   if (verbose == TRUE) cat(paste0("\n  Accelerometer data for ID ", ID ," does not overlap with GPS data"))
-  # } else if (log_acc == 5) {
-  #   if (verbose == TRUE) {
-  #     cat(paste0("\n  Accelerometer data for ID ", ID ,
-  #                " does not come with more than 30% valid",
-  #                " data during overlapping interval"))
-  #   }
-  # }
+  # print motivation for excluding files
+  if (log_acc == 1) {
+    if (verbose == TRUE) cat("\n  (X): GPS ID not found in ACC files")
+  } else if (log_acc == 2) {
+    if (verbose == TRUE) cat("\n  (X): ACC class dictionary not identify")
+  } else if (log_acc == 3) {
+    if (!file.exists(GGIR_ts_path) & verbose == TRUE) cat(paste0("\n  (X): path ", GGIR_ts_path, " does not exist"))
+    if (!file.exists(GGIR_legend) & verbose == TRUE) cat(paste0("\n  (X): path ", GGIR_legend, " does not exist"))
+  } else if (log_acc == 4) {
+    if (verbose == TRUE) cat(paste0("\n  (X): ACC ID does not overlap with GPS data"))
+  } else if (log_acc == 5) {
+    if (verbose == TRUE) {
+      cat(paste0("\n  (X): Less than 30% of matching ACC data is valid"))
+    }
+  } else if (log_acc == 0) {
+    cat(paste0("\n  (V)"))
+  }
   invisible(list(GPSdf = GPSdf, log_acc = log_acc))
 }
