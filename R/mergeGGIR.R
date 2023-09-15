@@ -39,25 +39,26 @@ mergeGGIR = function(GGIRpath, GPSdf, ID, verbose) {
           GPSdf = GPSdf[which(GPSdf$timenum >= rangeStart & GPSdf$timenum <= rangeEnd),]
           G = G[which(G$timenum >= (rangeStart - 60) & G$timenum <= (rangeEnd + 60)),] # take wider GGIR range to ease interpolation
           
-          # Only consider data if at least 30 percent of the accelerometer recording has valid data
-          if (length(which(G$invalidepoch == 0)) / nrow(G) > 0.3) {
+          # Interpolate GGIR output time series to match GPS time series
+          # Note that when time resolution is different between GGIR output and GPS
+          # this only interpolates time series to match resolution, which is not
+          # the same as going back to original data and extracting same timestamps
+          
+          # Linearly interpolate acceleration
+          GPSdf$GGIR_ACC = GGIRread::resample(raw = as.matrix(G$ACC), rawTime = G$timenum, time = GPSdf$time, stop = nrow(G), type = 1)
+          # Nearest neigbour interpolate other GGIR output columns
+          col2impute = c("SleepPeriodTime", "invalidepoch", "guider", "window", "class_id")
+          GS = as.data.frame(GGIRread::resample(raw = as.matrix(G[, col2impute]),
+                                                rawTime = G$timenum,
+                                                time = GPSdf$time, stop = nrow(G), type = 2))
+          colnames(GS) = paste0("GGIR_", col2impute)
+          # turn class_id to factor to integrate the class labels
+          GS$GGIR_class_id = cut(x = GS$GGIR_class_id, breaks = c(Legend$class_id - 0.1, 100), labels = Legend$class_name)
+          GPSdf = cbind(GPSdf, GS)
+          
+          # Only consider data if there is at least one valid accelerometer epoch
+          if (length(which(GPSdf$GGIR_invalidepoch == 0)) > 0) {
             log_acc = 0
-            # Interpolate GGIR output time series to match GPS time series
-            # Note that when time resolution is different between GGIR output and GPS
-            # this only interpolates time series to match resolution, which is not
-            # the same as going back to original data and extracting same timestamps
-            
-            # Linearly interpolate acceleration
-            GPSdf$GGIR_ACC = GGIRread::resample(raw = as.matrix(G$ACC), rawTime = G$timenum, time = GPSdf$time, stop = nrow(G), type = 1)
-            # Nearest neigbour interpolate other GGIR output columns
-            col2impute = c("SleepPeriodTime", "invalidepoch", "guider", "window", "class_id")
-            GS = as.data.frame(GGIRread::resample(raw = as.matrix(G[, col2impute]),
-                                                  rawTime = G$timenum,
-                                                  time = GPSdf$time, stop = nrow(G), type = 2))
-            colnames(GS) = paste0("GGIR_", col2impute)
-            # turn class_id to factor to integrate the class labels
-            GS$GGIR_class_id = cut(x = GS$GGIR_class_id, breaks = c(Legend$class_id - 0.1, 100), labels = Legend$class_name)
-            GPSdf = cbind(GPSdf, GS)
           }
         }
       }
@@ -67,15 +68,15 @@ mergeGGIR = function(GGIRpath, GPSdf, ID, verbose) {
   if (log_acc == 1) {
     if (verbose == TRUE) cat("\n  (X): GPS ID not found in ACC files")
   } else if (log_acc == 2) {
-    if (verbose == TRUE) cat("\n  (X): ACC class dictionary not identify")
+    if (verbose == TRUE) cat("\n  (X): ACC class dictionary not identified")
   } else if (log_acc == 3) {
     if (!file.exists(GGIR_ts_path) & verbose == TRUE) cat(paste0("\n  (X): path ", GGIR_ts_path, " does not exist"))
     if (!file.exists(GGIR_legend) & verbose == TRUE) cat(paste0("\n  (X): path ", GGIR_legend, " does not exist"))
   } else if (log_acc == 4) {
-    if (verbose == TRUE) cat(paste0("\n  (X): ACC ID does not overlap with GPS data"))
+    if (verbose == TRUE) cat(paste0("\n  (X): ACC does not overlap in time with GPS data"))
   } else if (log_acc == 5) {
     if (verbose == TRUE) {
-      cat(paste0("\n  (X): Less than 30% of matching ACC data is valid"))
+      cat(paste0("\n  (X): ACC data entirely labelled as invalid"))
     }
   } else if (log_acc == 0) {
     cat(paste0("\n  (V)"))
