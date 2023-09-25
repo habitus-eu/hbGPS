@@ -49,12 +49,14 @@ imitatePALMSformat = function(D, ID, AccThresholds, verbose = TRUE) {
       dx = diff(x)
       s0 = which(dx == 1) + 1
       s1 = which(dx == -1)
-      if (s1[1] < s0[1]) s1 = s1[-1]
-      if (length(s0) > length(s1)) s0 = s0[1:length(s1)]
-      cnt = 1
-      for (si in 1:length(s0)) {
-        x[s0[si]:s1[si]] = cnt
-        cnt = cnt + 1
+      if (length(s0) != 0 & length(s1) != 0) {
+        if (s1[1] < s0[1]) s1 = s1[-1]
+        if (length(s0) > length(s1)) s0 = s0[1:length(s1)]
+        cnt = 1
+        for (si in 1:length(s0)) {
+          x[s0[si]:s1[si]] = cnt
+          cnt = cnt + 1
+        }
       }
       return(x)
     }
