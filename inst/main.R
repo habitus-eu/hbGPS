@@ -7,7 +7,7 @@ graphics.off()
 # gps_file = "/media/vincent/DATA/Habitus/gps/1.csv"
 # tz = "Canada/Mountain" # <= ! adjust for each dataset
 configFile = "D:/Code/HabitusGUI/inst/testfiles_hbgps/config_hbgps.csv"
-testdata = "DK" # playce, BE
+testdata = "Teun" # playce, BE
 if (testdata == "playce") {
   gps_file = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/gps_playce/41023_B37-20160722.csv"
   outputDir = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/GPS_R"
@@ -28,6 +28,14 @@ if (testdata == "playce") {
   time_format = "%Y/%m/%d %H:%M:%S"
   configFile = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/DKtestdata/config_hbGPS.csv"
   tz = "Europe/Brussels"
+  
+} else if (testdata == "Teun") {
+  gps_file = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/Teun/Driestam/gps"
+  outputDir = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/Teun/Driestam"
+  GGIRpath = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/Teun/Driestam/output_acc/meta/ms5.outraw"
+  time_format = "%Y/%m/%d %H:%M:%S"
+  configFile = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/Teun/Driestam/config_hbGPS.csv"
+  tz = "Europe/Amsterdam"
   
 } else if (testdata == "own") {
   gps_file = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/BEtestdata/GPS"
