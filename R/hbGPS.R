@@ -260,6 +260,19 @@ hbGPS = function(gps_file = NULL,
     outputFileName = paste0(outputFolder, "/", unlist(strsplit(basename(filei), "[.]csv"))[1], ".csv")
     data.table::fwrite(D, file = outputFileName)
   }
+  # append all
+  input_path = outputFolder
+  output_file = paste0(outputFolder, "/combined.csv")
+  filenames = dir(input_path, full.names = TRUE)
+  filenames = filenames[which(filenames != output_file)]
+  if (length(filenames) < 1000) {
+    output = as.data.frame(do.call(rbind, lapply(filenames, data.table::fread)), stringsAsFactors = FALSE)
+    data.table::fwrite(x = output, file = output_file, row.names = FALSE)
+  } else {
+    warning(paste0("\nFiles not appended because there are more than 1000 files.",
+                   " User may prefer to do this locally"), call. = FALSE)
+  }
+  
   if (return_object == TRUE) {
     return(D)
   } else {
