@@ -1,6 +1,12 @@
 \name{NEWS}
 \title{News for Package \pkg{GGIRread}}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
+\section{Changes in version 0.0.4 (release date:28-09-2023)}{
+    \itemize{
+      \item Handle absence of activity bouts
+      \item Automatically append all files at the end of the process
+    }
+}
 \section{Changes in version 0.0.3 (release date:15-09-2023)}{
     \itemize{
       \item Remove exclusion of recordings with less than 30 percent
