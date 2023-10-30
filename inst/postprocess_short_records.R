@@ -8,7 +8,7 @@ threshold.lig = round(100 * (5 / 60), digits = 2)
 threshold.mod = round(2500 * (5 / 60), digits = 2)
 threshold.vig = round(10000 * (5 / 60), digits = 2)
 # Set to GGIR output folder
-GGIR_output_folder = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/Jae/output_acc"
+GGIR_output_folder = "D:/output_acc"
 
 acc.metric = "NeishabouriCount_x"
 
