@@ -3,6 +3,46 @@ dirR = dir("D:/Code/GGIR/R", full.names = TRUE)
 for (i in dirR) source(i)
 # library(GGIR)
 
+
+
+
+# Short recording
+
+GGIR(datadir = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/Jae/acc",
+     outputdir = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/Jae",
+     dataFormat = "actigraph_csv",
+     mode = c(1:3),
+     idloc = 6,
+     overwrite = TRUE,
+     do.parallel = FALSE,
+     do.imp = FALSE,
+     do.report = c(),
+     windowsizes = c(10, 60, 900),
+     threshold.lig = round(100 * (5/60), digits = 2),
+     threshold.mod = round(2500 * (5/60), digits = 2),
+     threshold.vig = round(10000 * (5/60), digits = 2),
+     extEpochData_timeformat = "%m/%d/%Y %H:%M:%S",
+     do.neishabouricounts = TRUE,
+     acc.metric = "NeishabouriCount_x",
+     HASPT.algo = "NotWorn",
+     HASIB.algo = "NotWorn",
+     do.visual = TRUE,
+     includedaycrit = 2,
+     includenightcrit = 2,
+     visualreport = FALSE,
+     outliers.only = FALSE,
+     save_ms5rawlevels = TRUE,
+     ignorenonwear = FALSE,
+     HASPT.ignore.invalid = FALSE,
+     save_ms5raw_without_invalid = FALSE
+)
+
+
+
+
+kkk
+
+
 # Teun
 
 
@@ -16,7 +56,7 @@ GGIR(datadir = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/Teun/Dri
      do.imp = FALSE,
      do.report = c(2, 4, 5),
      windowsizes = c(10, 900, 3600),
-     threshold.in = round(100 * (5/60), digits = 2),
+     threshold.lig = round(100 * (5/60), digits = 2),
      threshold.mod = round(2500 * (5/60), digits = 2),
      threshold.vig = round(10000 * (5/60), digits = 2),
      extEpochData_timeformat = "%m/%d/%Y %H:%M:%S",
@@ -36,7 +76,7 @@ GGIR(datadir = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/Teun/Dri
 )
 
 
-kkk
+
 # DK
 
 
