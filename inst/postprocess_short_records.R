@@ -1,15 +1,14 @@
 rm(list = ls())
 library(GGIR)
 
+# Specify path to folder create by GGIR:
+GGIR_output_folder = "D:/output_acc"
 
-# Specify thresholds and timezone identical to how it was used in GGIR call
+# Specify arguments identical to how they were set for GGIR:
 desiredtz = ""
 threshold.lig = round(100 * (5 / 60), digits = 2)
 threshold.mod = round(2500 * (5 / 60), digits = 2)
 threshold.vig = round(10000 * (5 / 60), digits = 2)
-# Set to GGIR output folder
-GGIR_output_folder = "D:/output_acc"
-
 acc.metric = "NeishabouriCount_x"
 
 #============================================================
