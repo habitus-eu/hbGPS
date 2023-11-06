@@ -66,7 +66,7 @@ for (i in 1:length(fnames.ms2)) {
   Lnames = out$Lnames
   outdir = paste0(metadatadir, ms5.outraw, "/", threshold.lig, "_", threshold.mod, "_", threshold.vig)
   if (!dir.exists(outdir)) {
-    dir.create(outdir)
+    dir.create(outdir, recursive = TRUE)
   }
   # Create legend file:
   legendfile = paste0(metadatadir, ms5.outraw, "/behavioralcodes", as.Date(Sys.time()), ".csv")
