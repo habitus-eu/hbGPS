@@ -7,7 +7,8 @@ graphics.off()
 # gps_file = "/media/vincent/DATA/Habitus/gps/1.csv"
 # tz = "Canada/Mountain" # <= ! adjust for each dataset
 configFile = "D:/Code/HabitusGUI/inst/testfiles_hbgps/config_hbgps.csv"
-testdata = "Teun" # playce, BE
+testdata = "NBBB" # playce, BE
+idloc = 6 #2
 if (testdata == "playce") {
   gps_file = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/gps_playce/41023_B37-20160722.csv"
   outputDir = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/GPS_R"
@@ -36,7 +37,14 @@ if (testdata == "playce") {
   time_format = "%Y/%m/%d %H:%M:%S"
   configFile = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/Teun/Driestam/config_hbGPS.csv"
   tz = "Europe/Amsterdam"
-  
+} else if (testdata == "NBBB") {
+  gps_file = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/NBBB2010/GPS"
+  outputDir = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/NBBB2010"
+  GGIRpath = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/NBBB2010/output_Acc/meta/ms5.outraw"
+  time_format = "%Y/%m/%d %H:%M:%S"
+  configFile = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/NBBB2010/config_hbGPS.csv"
+  tz = "Europe/Amsterdam"
+  idloc = 2
 } else if (testdata == "own") {
   gps_file = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/BEtestdata/GPS"
   outputDir = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/BEtestdata"
@@ -61,7 +69,7 @@ do.mapview = TRUE
 visual_inspect_ts = FALSE
 
 folderWithFunctions = "D:/Code/hbGPS/R"
-idloc = 6 #2
+
 
 AccThresholds = c(100, 2500, 10000, 15000) * c(5/60) # assumes GGIR's default epoch length of 5 seconds
 AccThresholds = round(AccThresholds, digits = 2)
