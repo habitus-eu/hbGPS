@@ -201,8 +201,7 @@ hbGPS = function(gps_file = NULL,
       right = 3:length(segments$values)
       br = which(
         segments$values[cent] == 2 &
-          segments$length[cent] <= threshold &
-          segments$values[left] > 2 & segments$values[right] > 2
+          segments$length[cent] <= threshold
       )
       if (length(br) > 0) {
         segments$values[br + 1] = 3 # note that these can also be brief indoor periods
@@ -214,12 +213,7 @@ hbGPS = function(gps_file = NULL,
     
     D$state[which(D$indoor == TRUE & D$state != 3)] = 1
     
-    # remove tagged data
-    i99 = which(D$state == 99)
-    if (length(i99) > 0) {
-      D = D[-i99, ]
-    }
-    
+
     #================
     # Restore original resolution of data
     D = D[which(D$duplicated == FALSE), ]
