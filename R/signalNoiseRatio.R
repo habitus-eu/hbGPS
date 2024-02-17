@@ -6,8 +6,11 @@ signalNoiseRatio = function(df) {
   }
   
   getSNR = function(x) {
+    Ngroups = length(unlist(strsplit(x, ";")))
+    Ndashes = length(unlist(strsplit(x, "-"))) - 1
+    snr_index = (Ndashes / Ngroups) + 1 # assumption that snr is last value in group
     x = unlist(strsplit(x, ";|-"))
-    snr = sum(as.numeric(x[seq(2, length(x), by = 2)]))
+    snr = sum(as.numeric(x[seq(snr_index, length(x), by = snr_index)]))
     return(snr)
   }
   
