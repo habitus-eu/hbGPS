@@ -201,7 +201,8 @@ hbGPS = function(gps_file = NULL,
       right = 3:length(segments$values)
       br = which(
         segments$values[cent] == 2 &
-          segments$length[cent] <= threshold
+          segments$length[cent] <= threshold &
+          segments$values[left] > 2 & segments$values[right] > 2
       )
       if (length(br) > 0) {
         segments$values[br + 1] = 3 # note that these can also be brief indoor periods
