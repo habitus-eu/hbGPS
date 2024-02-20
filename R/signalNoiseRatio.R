@@ -10,7 +10,7 @@ signalNoiseRatio = function(df) {
     # or "(14-38);(06-34);(22-31);(28-19);(03-37);(20-00)"
     # which gives Nsatillites of 6 and Ndashes of 6 below
     # this then gives snr_index of 2 below, which means that snr is 
-    # every time the second value of a group.
+    # the second value of each group.
     x = gsub(pattern = "[(]|[)]", replacement = "", x = x)
     Nsatillites = length(unlist(strsplit(x, ";")))
     Ndashes = length(unlist(strsplit(x, "-"))) - 1
@@ -19,7 +19,7 @@ signalNoiseRatio = function(df) {
     # in the example above this would be:
     # "#14 38 #06 34 #22 31 28 19 #03 37 20 00"
     x = unlist(strsplit(x, ";|-"))
-    # take same of the sum of every second value, which in this case is 159
+    # take sum of every second value, which in this case is 159
     snr_indeces = seq(snr_index, length(x), by = snr_index)
     snr = sum(as.numeric(x[snr_indeces]))
     return(snr)
