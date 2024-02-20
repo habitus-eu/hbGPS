@@ -6,7 +6,8 @@ signalNoiseRatio = function(df) {
   }
   
   getSNR = function(x) {
-    # x is for example "(#14-38;#06-34;#22-31;28-19;#03-37;20-00)"
+    # x is for example "#14-38;#06-34;#22-31;28-19;#03-37;20-00"
+    # or "(14-38);(06-34);(22-31);(28-19);(03-37);(20-00)"
     # which gives Nsatillites of 6 and Ndashes of 6 below
     # this then gives snr_index of 2 below, which means that snr is 
     # every time the second value of a group.
