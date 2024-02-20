@@ -13,8 +13,8 @@ test_that("signalNoiseRatio correctly extracts snr", {
   expect_true(out$snr_available)
   expect_true(out$snr_ratio_available)
   
-  df = data.frame(nsatused = "6",
-                  nsatview = "10",
+  df = data.frame(nsatused = 6,
+                  nsatview = 10,
                   satinfo = satinfo_format1)
   out = signalNoiseRatio(df)
   expect_equal(out$df$snr_ratio, 60)
@@ -33,8 +33,8 @@ test_that("signalNoiseRatio correctly extracts snr", {
   expect_true(out$snr_available)
   expect_true(out$snr_ratio_available)
   
-  df = data.frame(nsatused = "6",
-                  nsatview = "10",
+  df = data.frame(nsatused = 6,
+                  nsatview = 10,
                   satinfo = satinfo_format2)
   out = signalNoiseRatio(df)
   expect_equal(out$df$snr_ratio, 60)
