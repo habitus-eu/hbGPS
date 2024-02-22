@@ -3,8 +3,8 @@ context("signalNoiseRatio")
 test_that("signalNoiseRatio correctly extracts snr", {
   
   # Format 1
-  satinfo_format1 = paste0("#32-26;#22-18;09-16;17-00;31-00;",
-                           "#14-16;#20-22;#28-18;11-00;#19-27")
+  satinfo_format1 = paste0("#32-26;#22-18;#09-16;#17-00;#31-00;",
+                           "#14-16;#20-22;#28-18;#11-00;#19-27")
   df = data.frame(nsat_uv = "6(10)",
                   satinfo = satinfo_format1)
   out = signalNoiseRatio(df)
