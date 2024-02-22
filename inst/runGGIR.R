@@ -1,3 +1,9 @@
+# This script is only intended to aid development of code
+# Not all our test data could be converted into unit-test by which it felt
+# best to just have a script like this to process various datasets and use that to 
+# monitor for issues
+
+
 rm(list = ls())
 dirR = dir("D:/Code/GGIR/R", full.names = TRUE)
 dirR = dirR[grep(pattern = "sysdata.rda", x = dirR, invert = TRUE, value = FALSE)]
