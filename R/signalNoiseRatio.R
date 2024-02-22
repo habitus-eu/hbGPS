@@ -1,6 +1,7 @@
 signalNoiseRatio = function(df) {
   getSNRratio = function(x) {
-    x = as.numeric(unlist(strsplit(x, "[(]|[)]")))
+    x = gsub(pattern = " ",replacement = "", x = x)
+    x = as.numeric(unlist(strsplit(x, "[(]|[)]|/")))
     snr_ratio = (x[1] * 100) / x[2]
     return(snr_ratio)
   }
