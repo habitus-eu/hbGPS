@@ -12,6 +12,7 @@ signalNoiseRatio = function(df) {
     # which gives Nsatillites of 6 and Ndashes of 6 below
     # this then gives snr_index of 2 below, which means that snr is 
     # the second value of each group.
+    x = gsub(pattern = " ",replacement = "", x = x)
     x = gsub(pattern = "[(]|[)]", replacement = "", x = x)
     Nsatillites = length(unlist(strsplit(x, ";")))
     Ndashes = length(unlist(strsplit(x, "-"))) - 1
