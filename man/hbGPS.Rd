@@ -17,7 +17,7 @@
 }
 \arguments{
   \item{gps_file}{
-    Path to GPS file in .csv format
+    Path to GPS file in .csv format. For details on format see \link{load_and_tidy_up_GPS}
   }
   \item{GGIRpath}{
     Path to GGIR time series ouput folder (ms5.outraw)
