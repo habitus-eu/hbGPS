@@ -1,6 +1,12 @@
 \name{NEWS}
 \title{News for Package \pkg{GGIRread}}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
+\section{Changes in version 0.0.5 (release date:05-03-2024)}{
+    \itemize{
+      \item More formats for GPS satillitate info now supported, see #12
+      \item Add documentation for GPS csv file format
+    }
+}
 \section{Changes in version 0.0.4 (release date:28-09-2023)}{
     \itemize{
       \item Handle absence of activity bouts

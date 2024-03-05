@@ -22,8 +22,9 @@ load_and_tidy_up_GPS = function(gps_file, idloc = NULL, tz = "", time_format = "
   colnames(df) = gsub(pattern = "height[(]m[)]", replacement = "height_m", x = colnames(df))
   colnames(df) = gsub(pattern = "latitude", replacement = "lat", x = colnames(df))
   colnames(df) = gsub(pattern = "longitude", replacement = "lon", x = colnames(df))
+  colnames(df) = gsub(pattern = "nsat[(]used/view[)]", replacement = "nsat_uv", x = colnames(df))
   colnames(df) = gsub(pattern = "nsat [(]used/view[)]", replacement = "nsat_uv", x = colnames(df))
-  colnames(df) = gsub(pattern = "sat info [(]sid-snr[)]", replacement = "satinfo", x = colnames(df))
+  colnames(df)[grep(pattern = "sat info ", x = colnames(df))] = "satinfo"
   # cat(paste0("\nLATITUDE ", mean(df$lat), " longitude ", mean(df$lon), "\n"))
   # Time
   if (length(grep(pattern = "sensecam", x = colnames(df))) > 0) {
