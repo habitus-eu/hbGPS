@@ -8,6 +8,7 @@ graphics.off()
 # tz = "Canada/Mountain" # <= ! adjust for each dataset
 configFile = "D:/Code/HabitusGUI/inst/testfiles_hbgps/config_hbgps.csv"
 testdata = "NBBB" # playce, BE
+# testdata = "JosefFeb2024" # playce, BE
 idloc = 6 #2
 if (testdata == "playce") {
   gps_file = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/gps_playce/41023_B37-20160722.csv"
@@ -45,6 +46,12 @@ if (testdata == "playce") {
   configFile = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/NBBB2010/config_hbGPS.csv"
   tz = "Europe/Amsterdam"
   idloc = 2
+} else if (testdata == "JosefFeb2024") {
+  gps_file = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/JosefMarch2024/GPS"
+  outputDir = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/JosefMarch2024"
+  GGIRpath = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/JosefMarch2024/output_CSV_COUNTS//meta/ms5.outraw"
+  time_format = "%Y/%m/%d %H:%M:%S"
+  tz = "Europe/Brussels"
 } else if (testdata == "own") {
   gps_file = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/BEtestdata/GPS"
   outputDir = "D:/Dropbox/Work/sharedfolder/DATA/Habitus/GPSprocessing/BEtestdata"
