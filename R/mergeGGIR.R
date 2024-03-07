@@ -17,7 +17,7 @@ mergeGGIR = function(GGIRpath, GPSdf, ID, verbose) {
   
   # select first time series in the folder, maybe later make this flexible to select specific time series
   GGIR_ts_paths = dir(items[grep(pattern = "behavioralcodes", x = basename(items), invert = TRUE)][1], full.names = TRUE)
-  GGIR_ts_path = GGIR_ts_paths[grep(pattern = ID, x = GGIR_ts_paths, value = FALSE)]
+  GGIR_ts_path = GGIR_ts_paths[grep(pattern = ID, x = basename(GGIR_ts_paths), value = FALSE)]
   log_acc = 1
   if (length(GGIR_ts_path) != 0) {
     log_acc = 2  
