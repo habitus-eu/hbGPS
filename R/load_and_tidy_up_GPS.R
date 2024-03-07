@@ -21,12 +21,6 @@ load_and_tidy_up_GPS = function(gps_file, idloc = NULL, tz = "", time_format = "
   colnames(df) = tolower(colnames(df))
   
   # Time
-  if (any(c("time", "date") %in% colnames(df))) {
-    stop(paste0("GPS data is expected to not have a column named \"time\" ",
-                "or \"date\". Please replace by \"local time\" and \"local date\" ",
-                " \"utc time\" and \"utc date\" ,or \"datetime\"."))
-  }
-  # Identify whether UTC time needs to be converted to local time
   convert_UTC2local = FALSE
   if ("local time" %in% colnames(df) &&
       length(grep(pattern = "T| ", x = format(df$`local time`[1]))) > 0) {
@@ -36,15 +30,19 @@ load_and_tidy_up_GPS = function(gps_file, idloc = NULL, tz = "", time_format = "
     # local time and local date are stored separately
     colnames(df) = gsub(pattern = "local time", replacement = "time", x = colnames(df))
     colnames(df) = gsub(pattern = "local date", replacement = "date", x = colnames(df))
+    # remove utc time and data, if they exist
     df = df[, which(colnames(df) %in% c("utc time", "utc date") == FALSE)]
+  } else if (any(c("time", "date") %in% colnames(df))) {
+    # column time and date already exist, we assume this is local time and not utc
   } else if (all(c("utc time", "utc date") %in% colnames(df))) {
-    # local time and ate are missing, but utc time and date are present
+    # local time and date are missing, but utc time and date are present
     convert_UTC2local = TRUE
     colnames(df) = gsub(pattern = "utc time", replacement = "time", x = colnames(df))
     colnames(df) = gsub(pattern = "utc date", replacement = "date", x = colnames(df))
   } else {
-    # none of the above worked, give warning
+    # none of the above worked, give error
     stop(paste0("GPS data is expected to either have column \"datetime\" (expressed in local timezone)",
+                " or columns \"time\" and \"date\" (expressed in local timezone) ",
                 " or columns \"utc time\" and \"utc date\" ",
                 "or columns \"local time\" and \"local date\""))
   }
