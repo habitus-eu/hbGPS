@@ -45,8 +45,6 @@
   used (view), used(view), used/view, or used / view. 
   If nsat(used/view) column is not available the code will look for column nsat and sid.
   It then extracts from the sid column the number of satilites in view.
-  
-  
 }
 \value{
   List with a data.frame df that holds the GPS time series
