@@ -4,7 +4,7 @@ mergeGGIR = function(GGIRpath, GPSdf, ID, verbose) {
   
   # If user by accident specified GGIR output folder then attempt
   # to update path to specify the ms5.outraw subfolder inside it
-  if (length(grep(pattern = "ms5.outraw", x = GGIRpath)) != 0) {
+  if (length(grep(pattern = "ms5.outraw", x = GGIRpath)) == 0) {
     newGGIRpath = paste0(GGIRpath, "/meta/ms5.outraw")
     if (dir.exists(newGGIRpath)) {
       GGIRpath = newGGIRpath
@@ -47,7 +47,9 @@ mergeGGIR = function(GGIRpath, GPSdf, ID, verbose) {
           # Linearly interpolate acceleration
           GPSdf$GGIR_ACC = GGIRread::resample(raw = as.matrix(G$ACC), rawTime = G$timenum, time = GPSdf$time, stop = nrow(G), type = 1)
           # Nearest neigbour interpolate other GGIR output columns
-          col2impute = c("SleepPeriodTime", "invalidepoch", "guider", "window", "class_id")
+          if ("class_id" %in% colnames(G) == FALSE) stop("GGIR time series misses class_id column")
+          if ("invalidepoch" %in% colnames(G) == FALSE) stop("GGIR time series misses invalidepoch column")
+          col2impute = colnames(G)[which(colnames(G) %in% c("SleepPeriodTime", "invalidepoch", "window", "class_id") == TRUE)]
           GS = as.data.frame(GGIRread::resample(raw = as.matrix(G[, col2impute]),
                                                 rawTime = G$timenum,
                                                 time = GPSdf$time, stop = nrow(G), type = 2))
