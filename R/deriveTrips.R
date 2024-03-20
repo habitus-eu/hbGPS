@@ -48,7 +48,7 @@ deriveTrips = function(df, tz, minTripDur, minTripDist_m) {
     s1 = as.POSIXct(Segs$time_t1[tripEnd[j]], tz = tz, origin = "1970-01-01")
     tripInd = which(df$time >= s0 & df$time <= s1)
     # trip duration in minutes
-    tripDur = (Segs$time_t1[tripEnd[j]] - Segs$time_t0[tripStart[j]])
+    tripDur = diff(as.numeric(range(df$time[c(tripInd, tripInd[length(tripInd)] + 1)])))
     tripDist_m = sum(abs(df$distance_m[tripInd]))
     maxTimeGap = max(df$deltaTime[tripInd])
     tripIncl = mean(df$inclination_deg[tripInd])
