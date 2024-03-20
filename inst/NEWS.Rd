@@ -1,6 +1,13 @@
 \name{NEWS}
 \title{News for Package \pkg{GGIRread}}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
+\section{Changes in version 0.0.6 (release date:??-??-2024)}{
+    \itemize{
+      \item Simplify mergeGGIR to no longer expect window column, see #20
+      \item Allow mergeGGIR to handle both full path to ms5.outraw folder or 
+      only the GGIR output folder
+    }
+}
 \section{Changes in version 0.0.5 (release date:05-03-2024)}{
     \itemize{
       \item More formats for GPS satillitate info now supported, see #12
