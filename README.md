@@ -18,6 +18,8 @@ with a wide variety of accelerometer brands and data formats
 - User control over key parameters
 
 
+A more detailed narrative description of hbGPS can be found [here](documentation.md).
+
 ## Installation
 
 ```
