@@ -55,7 +55,7 @@ In summary, the state for each data point is now a number in the set 2, 4, 5, 6,
 _(in function hbGPS.R)_
 
 So far, the code has only considered time points and changes between time points. However, to detect trips we need to understand the longer temporal patterns in the data. First, breaks in trips are defined as time periods where the state is 2, lasting less than a user defined duration as specified with parameter `maxBreakLengthSecond`. These trip breaks are labelled as state 3. Next, all time points with state not equal to 3 and classified as indoor are labelled as a new state 1.
-In other words, the state for each data point can now be any integer number in the set [1, 8].
+In other words, the state for each data point can now be any integer number in the set [1, 8]. This means that trips (excluding trip pause points) performed indoors are not considered, because in these conditions we do not trust the GPS data for speed assessment.
 
 An initial classification of trips now exist as all (sequences of) time points for which the state number is higher than 2.
 
